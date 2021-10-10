@@ -35,12 +35,12 @@ namespace MessengerBotManager
             if(grid1Drag)
             {
                 Point mp = e.GetPosition(Grid1Control);
-                double newX = grid.ColumnDefinitions[0].Width.Value + mp.X;
-                double codeX = grid.ColumnDefinitions[1].Width.Value - mp.X;
+                double newX = grid.ColumnDefinitions[0].Width.Value + mp.X - 15;
+                double codeX = grid.ColumnDefinitions[1].Width.Value - mp.X + 15;
                 if (codeX < 0) codeX = 0;
-                grid.ColumnDefinitions[1].Width = new GridLength(codeX, GridUnitType.Pixel);
+                grid.ColumnDefinitions[1].Width = new GridLength(codeX, GridUnitType.Star);
                 if (newX < 0) newX = 0;
-                grid.ColumnDefinitions[0].Width = new GridLength(newX, GridUnitType.Pixel);
+                grid.ColumnDefinitions[0].Width = new GridLength(newX, GridUnitType.Star);
             }
         }
 
@@ -62,13 +62,18 @@ namespace MessengerBotManager
             if (grid2Drag)
             {
                 Point mp = e.GetPosition(Grid2Control);
-                double newX = grid.ColumnDefinitions[2].Width.Value - mp.X;
-                double codeX = grid.ColumnDefinitions[1].Width.Value + mp.X;
+                double newX = grid.ColumnDefinitions[2].Width.Value - mp.X + 15;
+                double codeX = grid.ColumnDefinitions[1].Width.Value + mp.X - 15;
                 if (codeX < 0) codeX = 0;
-                grid.ColumnDefinitions[1].Width = new GridLength(codeX, GridUnitType.Pixel);
+                grid.ColumnDefinitions[1].Width = new GridLength(codeX, GridUnitType.Star);
                 if (newX < 0) newX = 0;
-                grid.ColumnDefinitions[2].Width = new GridLength(newX, GridUnitType.Pixel);
+                grid.ColumnDefinitions[2].Width = new GridLength(newX, GridUnitType.Star);
             }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -59,5 +59,25 @@ namespace MessengerBotManager.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static byte[] JavaScript_Dark {
+            get {
+                object obj = ResourceManager.GetObject("JavaScript_Dark", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static byte[] JavaScript_White {
+            get {
+                object obj = ResourceManager.GetObject("JavaScript_White", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
