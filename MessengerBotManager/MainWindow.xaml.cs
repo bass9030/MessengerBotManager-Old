@@ -15,6 +15,14 @@ namespace MessengerBotManager
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Window window = new CheckMDB();
+            window.Show();
+            window.Activate();
         }
 
         private void Grid1Control_MouseDown(object sender, MouseButtonEventArgs e)
@@ -71,9 +79,13 @@ namespace MessengerBotManager
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void makeNewBot(object sender, RoutedEventArgs e)
         {
+        }
 
+        private void settings(object sender, RoutedEventArgs e)
+        {
+            new Window1().Show();
         }
     }
 }

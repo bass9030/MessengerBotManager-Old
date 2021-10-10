@@ -1,0 +1,21 @@
+﻿<Window x:Class="MessengerBotManager.FirstSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MessengerBotManager"
+        mc:Ignorable="d"
+        Title="초기설정" Height="120" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="10*"/>
+
+        </Grid.RowDefinitions>
+        <Label x:Name="label" Content="메신저봇R의 데이터 저장 경로를 입력해주세요.(Ex. /sdcard/msgbot/Bots)" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        <TextBox x:Name="Path" Grid.Row="1" VerticalAlignment="Center" Margin="20 0 20 0"/>
+        <Button x:Name="Next" Content="다음" HorizontalAlignment="Right" Grid.Row="2" Margin="0 5 5 5" Width="50" Click="Next_Click"/>
+        <Button x:Name="Find" Content="찾아보기" HorizontalAlignment="Left" Grid.Row="2" Margin="5 5 0 5" Width="90" Visibility="Hidden" Click="Find_Click"/>
+    </Grid>
+</Window>

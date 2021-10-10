@@ -63,6 +63,26 @@ namespace MessengerBotManager.Properties {
         /// <summary>
         ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        public static byte[] adb {
+            get {
+                object obj = ResourceManager.GetObject("adb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static byte[] AdbWinApi {
+            get {
+                object obj = ResourceManager.GetObject("AdbWinApi", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         public static byte[] JavaScript_Dark {
             get {
                 object obj = ResourceManager.GetObject("JavaScript_Dark", resourceCulture);
