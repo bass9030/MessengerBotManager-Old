@@ -110,7 +110,7 @@ namespace MessengerBotManager
                     TaskDialogButton button1 = new TaskDialogButton();
                     button1.ButtonType = ButtonType.Retry;
                     TaskDialogButton button2 = new TaskDialogButton();
-                    button2.ButtonType = ButtonType.No;
+                    button2.ButtonType = ButtonType.Cancel;
                     taskDialog.Buttons.Add(button1);
                     taskDialog.Buttons.Add(button2);
                     taskDialog.Content = "adb에서 0이 아닌 값을 반환했습니다.\n다시 시도하시겠습니까?";
@@ -118,7 +118,15 @@ namespace MessengerBotManager
                 }
                 else
                 {
-                    taskDialog.Content = "휴대폰을 인식할 수 없습니다.";
+                    taskDialog.Content = "휴대폰을 인식할 수 없습니다.\n휴대폰 연결 및 USB 디버깅 허용후 다시 시도해주세요.";
+                    taskDialog.ExpandedInformation = process.StandardOutput.ReadToEnd();
+                    TaskDialogButton button1 = new TaskDialogButton();
+                    button1.ButtonType = ButtonType.Retry;
+                    TaskDialogButton button2 = new TaskDialogButton();
+                    button2.ButtonType = ButtonType.Cancel;
+                    taskDialog.Buttons.Add(button1);
+                    taskDialog.Buttons.Add(button2);
+                    if (button1 == taskDialog.Show()) Window_Closing(null, null);
                 }
             }
             Title = "완료됨!";
@@ -133,7 +141,10 @@ namespace MessengerBotManager
                     }));
                     Thread.Sleep(10);
                 }
-                Close();
+                Dispatcher.Invoke(new Action(delegate
+                {
+                    Close();
+                }));
             })).Start();
         }
     }
