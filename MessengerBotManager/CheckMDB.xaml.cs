@@ -61,12 +61,33 @@ namespace MessengerBotManager
                 }
             })).Start();
 
-            if(!File.Exists("adb.exe") || !File.Exists("AdbWinApi.dll"))
+            if(!Directory.Exists(Properties.Settings.Default.DataSavePath))
+            {
+                try
+                {
+                    Directory.CreateDirectory(Properties.Settings.Default.DataSavePath);
+                }
+                catch(Exception ex)
+                {
+                    TaskDialog dialog = new TaskDialog();
+                    dialog.WindowTitle = "폴더 생성 실패";
+                    dialog.Content = "폴더 생성에 실패했습니다. 폴더 제작 권환이 있는지 확인하세요";
+                    TaskDialogButton button1 = new TaskDialogButton();
+                    button1.ButtonType = ButtonType.Ok;
+                    dialog.Buttons.Add(button1);
+                    dialog.ExpandedInformation = ex.ToString();
+                    dialog.Show();
+
+                }
+            }
+
+            if(!File.Exists("adb.exe") || !File.Exists("AdbWinApi.dll") || !File.Exists("AdbWinUsbApi.dll"))
             {
                 Title = "adb 추출중...";
                 label.Content = Title;
                 File.WriteAllBytes("adb.exe", Properties.Resources.adb);
                 File.WriteAllBytes("AdbWinApi.dll", Properties.Resources.AdbWinApi);
+                File.WriteAllBytes("AdbWinUsbApi.dll", Properties.Resources.AdbWinApi);
                 new Thread(new ParameterizedThreadStart(delegate
                 {
                     for (int i = 20; i < 40; i++)
@@ -104,9 +125,10 @@ namespace MessengerBotManager
                 TaskDialog taskDialog = new TaskDialog();
                 taskDialog.MainIcon = TaskDialogIcon.Error;
                 taskDialog.WindowTitle = "동기화 실패";
-                if (process.StandardOutput.ReadToEnd().IndexOf("no devices/emulators found") == -1)
+                string result = process.StandardOutput.ReadToEnd();
+                if (result.IndexOf("no devices/emulators found") == -1)
                 {
-                    taskDialog.ExpandedInformation = process.StandardOutput.ReadToEnd();
+                    taskDialog.ExpandedInformation = result;
                     TaskDialogButton button1 = new TaskDialogButton();
                     button1.ButtonType = ButtonType.Retry;
                     TaskDialogButton button2 = new TaskDialogButton();
@@ -119,7 +141,7 @@ namespace MessengerBotManager
                 else
                 {
                     taskDialog.Content = "휴대폰을 인식할 수 없습니다.\n휴대폰 연결 및 USB 디버깅 허용후 다시 시도해주세요.";
-                    taskDialog.ExpandedInformation = process.StandardOutput.ReadToEnd();
+                    taskDialog.ExpandedInformation = result;
                     TaskDialogButton button1 = new TaskDialogButton();
                     button1.ButtonType = ButtonType.Retry;
                     TaskDialogButton button2 = new TaskDialogButton();

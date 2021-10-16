@@ -161,13 +161,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\adb.exe" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AdbWinApi.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Mdb.dll" />
+    <None Include="Resources\AdbWinUsbApi.dll" />
+    <None Include="Resources\AdbWinApi.dll" />
+    <None Include="Resources\adb.exe" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
