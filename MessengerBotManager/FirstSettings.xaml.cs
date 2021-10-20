@@ -1,6 +1,7 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,32 @@ namespace MessengerBotManager
         {
             if(Properties.Settings.Default.MessengerBotRPath == "")
             {
+                try
+                {
+                    Process process = new Process();
+                    ProcessStartInfo proinfo = new ProcessStartInfo();
+                    proinfo.FileName = "adb.exe";
+                    proinfo.Arguments = $"ls {Path.Text}";
+                    proinfo.RedirectStandardOutput = true;
+                    proinfo.UseShellExecute = false;
+                    proinfo.CreateNoWindow = true;
+                    process.StartInfo = proinfo;
+                    process.Start();
+                    process.WaitForExit();
+                    string output = process.StandardOutput.ReadToEnd();
+                    if(output.IndexOf("editor_shortcuts.txt") != -1)
+                    {
+                        TaskDialog dialog = new TaskDialog();
+                        dialog.WindowTitle = "경고";
+                        dialog.Content = $"메신저봇 R의 루트 경로를 고른것 같습니다.{Path.Text}\n봇폴더로 변경하시겠습니까?\n(기존: {Path.Text} → 변경: {System.IO.Path.Combine(Path.Text, "Bots")}";
+                        TaskDialogButton button1 = new TaskDialogButton();
+                        button1.ButtonType = ButtonType.Yes;
+                        TaskDialogButton button2 = new TaskDialogButton();
+                        button2.ButtonType = ButtonType.No;
+                        dialog.Buttons.Add(button1);
+                        dialog.Buttons.Add(button2);
+                    }
+                }
                 Properties.Settings.Default.MessengerBotRPath = Path.Text;
                 label.Content = "MessengerBotManager가 데이터를 저장할 폴더를 지정해주세요.";
                 Find.Visibility = Visibility.Visible;
@@ -51,11 +78,11 @@ namespace MessengerBotManager
 
         private void Find_Click(object sender, RoutedEventArgs e)
         {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog dialog = new Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
             dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            CommonFileDialogResult result = dialog.ShowDialog();
-            if (result == CommonFileDialogResult.Ok) Path.Text = dialog.FileName;
+            Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult result = dialog.ShowDialog();
+            if (result == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok) Path.Text = dialog.FileName;
         }
     }
 }
