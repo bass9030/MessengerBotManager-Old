@@ -5,15 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Mdb;
 using Ookii.Dialogs.Wpf;
 
@@ -28,6 +20,10 @@ namespace MessengerBotManager
         public CheckMDB()
         {
             InitializeComponent();
+            foreach(string i in Adb_getFiles("/sdcard/msgbot/"))
+            {
+                Console.WriteLine(i);
+            }
             Loaded += CheckMDB_Loaded;
         }
 
@@ -45,6 +41,81 @@ namespace MessengerBotManager
             {
                 Window_Closing(null, null);
             }
+        }
+
+        public string[] Adb_getFiles(string directory)
+        {
+            Console.WriteLine("asdf0: " + directory);
+            List<string> result = new List<string>();
+            Process adb = new Process();
+            ProcessStartInfo proinfo = new ProcessStartInfo();
+            proinfo.FileName = "adb.exe";
+            Console.WriteLine("asdf1: " + PathCombine(directory, '/', "*/"));
+            proinfo.Arguments = $"shell ls -d {PathCombine(directory, '/', "*/")}";
+            proinfo.RedirectStandardOutput = true;
+            proinfo.UseShellExecute = false;
+            proinfo.CreateNoWindow = true;
+            adb.StartInfo = proinfo;
+            adb.Start();
+            adb.WaitForExit();
+            List<string> Directory = new List<string>();
+            Directory.AddRange(adb.StandardOutput.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.None));
+            proinfo.Arguments = $"shell ls {directory}";
+            adb.Start();
+            adb.WaitForExit();
+            string[] _tmpResult = adb.StandardOutput.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            foreach (string i in _tmpResult)
+            {
+                if (result.IndexOf(i) == -1)
+                {
+                    result.Add(i);
+                }
+            }
+            foreach(string i in Directory)
+            {
+                Console.WriteLine("asdf2: " + i);
+                result.AddRange(Adb_getFiles(i));
+            }
+
+            return result.ToArray();
+        }
+
+        //https://stackoverflow.com/a/38121245
+        public static string PathCombine(string pathBase, char separator = '/', params string[] paths)
+        {
+            if (paths == null || !paths.Any())
+                return pathBase;
+
+            #region Remove path end slash
+            var slash = new[] { '/', '\\' };
+            Action<StringBuilder> removeLastSlash = null;
+            removeLastSlash = (sb) =>
+            {
+                if (sb.Length == 0) return;
+                if (!slash.Contains(sb[sb.Length - 1])) return;
+                sb.Remove(sb.Length - 1, 1);
+                removeLastSlash(sb);
+            };
+            #endregion Remove path end slash
+
+            #region Combine
+            var pathSb = new StringBuilder();
+            pathSb.Append(pathBase);
+            removeLastSlash(pathSb);
+            foreach (var path in paths)
+            {
+                pathSb.Append(separator);
+                pathSb.Append(path);
+                removeLastSlash(pathSb);
+            }
+            #endregion Combine
+
+            #region Append slash if last path contains
+            if (slash.Contains(paths.Last().Last()))
+                pathSb.Append(separator);
+            #endregion Append slash if last path contains
+
+            return pathSb.ToString();
         }
 
         private void Window_Closing(object sender, EventArgs e)

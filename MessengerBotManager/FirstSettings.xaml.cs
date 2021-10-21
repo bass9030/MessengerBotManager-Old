@@ -34,6 +34,7 @@ namespace MessengerBotManager
 
         private void Next_Click(object sender, RoutedEventArgs e)
         {
+            string output  = "";
             if(Properties.Settings.Default.MessengerBotRPath == "")
             {
                 try
@@ -48,21 +49,41 @@ namespace MessengerBotManager
                     process.StartInfo = proinfo;
                     process.Start();
                     process.WaitForExit();
-                    string output = process.StandardOutput.ReadToEnd();
-                    if(output.IndexOf("editor_shortcuts.txt") != -1)
+                    output = process.StandardOutput.ReadToEnd();
+                    if (process.ExitCode != 0) throw new Exception();
+                    if (output.IndexOf("editor_shortcuts.txt") != -1)
                     {
                         TaskDialog dialog = new TaskDialog();
                         dialog.WindowTitle = "경고";
-                        dialog.Content = $"메신저봇 R의 루트 경로를 고른것 같습니다.{Path.Text}\n봇폴더로 변경하시겠습니까?\n(기존: {Path.Text} → 변경: {System.IO.Path.Combine(Path.Text, "Bots")}";
+                        dialog.Content = $"메신저봇 R의 루트 경로를 입력한것 같습니다.\n봇폴더로 변경하시겠습니까?\n(기존: {Path.Text} → 변경: {System.IO.Path.Combine(Path.Text, "Bots")}";
                         TaskDialogButton button1 = new TaskDialogButton();
                         button1.ButtonType = ButtonType.Yes;
                         TaskDialogButton button2 = new TaskDialogButton();
                         button2.ButtonType = ButtonType.No;
                         dialog.Buttons.Add(button1);
                         dialog.Buttons.Add(button2);
+                        TaskDialogButton result = dialog.ShowDialog();
+                        if(result.ButtonType == ButtonType.Yes)
+                        {
+                            Path.Text = System.IO.Path.Combine(Path.Text, "Bots");
+                        }
+                        Properties.Settings.Default.MessengerBotRPath = Path.Text;
                     }
                 }
-                Properties.Settings.Default.MessengerBotRPath = Path.Text;
+                catch 
+                {
+                    TaskDialog taskDialog = new TaskDialog();
+                    taskDialog.ExpandedInformation = output;
+                    TaskDialogButton button1 = new TaskDialogButton();
+                    button1.ButtonType = ButtonType.Yes;
+                    TaskDialogButton button2 = new TaskDialogButton();
+                    button2.ButtonType = ButtonType.No;
+                    taskDialog.Buttons.Add(button1);
+                    taskDialog.Buttons.Add(button2);
+                    taskDialog.Content = "경로 확인을 실패했습니다.\n다시 시도하시겠습니까?(경로 미확인시 추후 파일동기화가 비정상적으로 이루어질 수 있습니다.)";
+                    if (ButtonType.Yes == taskDialog.Show().ButtonType) Next_Click(null, null);
+                    else Properties.Settings.Default.MessengerBotRPath = Path.Text;
+                }
                 label.Content = "MessengerBotManager가 데이터를 저장할 폴더를 지정해주세요.";
                 Find.Visibility = Visibility.Visible;
                 Next.Content = "마침";
