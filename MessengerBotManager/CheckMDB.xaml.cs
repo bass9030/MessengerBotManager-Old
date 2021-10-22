@@ -19,18 +19,18 @@ namespace MessengerBotManager
         Process process;
         public CheckMDB()
         {
-            InitializeComponent();
-            foreach(string i in Adb_getFiles("/sdcard/msgbot/"))
-            {
-                Console.WriteLine(i);
-            }
+            InitializeComponent();            
             Loaded += CheckMDB_Loaded;
         }
 
         private void CheckMDB_Loaded(object sender, RoutedEventArgs e)
         {
             this.Activate();
-            if(Properties.Settings.Default.MessengerBotRPath == "" || 
+            foreach (string i in Adb_getFiles("/sdcard/msgbot/Bots"))
+            {
+                Console.WriteLine(i);
+            }
+            if (Properties.Settings.Default.MessengerBotRPath == "" || 
                 Properties.Settings.Default.DataSavePath == "")
             {
                 Window window = new FirstSettings();
@@ -45,35 +45,45 @@ namespace MessengerBotManager
 
         public string[] Adb_getFiles(string directory)
         {
-            Console.WriteLine("asdf0: " + directory);
+            //Console.WriteLine(directory + "(0)" + directory);
             List<string> result = new List<string>();
+            if (directory.Length == 0) return result.ToArray();
             Process adb = new Process();
             ProcessStartInfo proinfo = new ProcessStartInfo();
             proinfo.FileName = "adb.exe";
-            Console.WriteLine("asdf1: " + PathCombine(directory, '/', "*/"));
+            //Console.WriteLine(directory + "(1)" + PathCombine(directory, '/', "*/"));
             proinfo.Arguments = $"shell ls -d {PathCombine(directory, '/', "*/")}";
+            proinfo.StandardErrorEncoding = Encoding.UTF8;
+            proinfo.StandardOutputEncoding = Encoding.UTF8;
             proinfo.RedirectStandardOutput = true;
+            proinfo.RedirectStandardError = true;
             proinfo.UseShellExecute = false;
             proinfo.CreateNoWindow = true;
             adb.StartInfo = proinfo;
             adb.Start();
             adb.WaitForExit();
+            string output = adb.StandardOutput.ReadToEnd();
+            string error = adb.StandardError.ReadToEnd();
+            if (error != "")
+            {
+                return result.ToArray();
+            }
             List<string> Directory = new List<string>();
-            Directory.AddRange(adb.StandardOutput.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.None));
+            Directory.AddRange(output.Split(new string[] { "\r\n" }, StringSplitOptions.None));
             proinfo.Arguments = $"shell ls {directory}";
             adb.Start();
             adb.WaitForExit();
             string[] _tmpResult = adb.StandardOutput.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.None);
             foreach (string i in _tmpResult)
             {
-                if (result.IndexOf(i) == -1)
+                if (!Array.Exists(_tmpResult, e => e == i) && result.IndexOf(i) == -1 && i != "")
                 {
-                    result.Add(i);
+                    result.Add(PathCombine(directory, '/', i));
                 }
             }
             foreach(string i in Directory)
             {
-                Console.WriteLine("asdf2: " + i);
+                //Console.WriteLine(directory + "(2) " + i);
                 result.AddRange(Adb_getFiles(i));
             }
 
@@ -179,6 +189,7 @@ namespace MessengerBotManager
             ProcessStartInfo proinfo = new ProcessStartInfo();
             proinfo.FileName = "adb.exe";
             proinfo.Arguments = $"pull {Properties.Settings.Default.MessengerBotRPath} {Properties.Settings.Default.DataSavePath}";
+            proinfo.StandardOutputEncoding = Encoding.UTF8;
             proinfo.RedirectStandardOutput = true;
             proinfo.UseShellExecute = false;
             proinfo.CreateNoWindow = true;
