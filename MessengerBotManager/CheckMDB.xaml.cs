@@ -63,7 +63,8 @@ namespace MessengerBotManager
             string error = adb.StandardError.ReadToEnd();
             if (error != "")
             {
-                return result.ToArray();
+                if (error.IndexOf("no devices/emulators found") != -1) throw new Exception(error);
+                else return result.ToArray();
             }
             List<string> Directory = new List<string>();
             Directory.AddRange(output.Split(new string[] { "\r\n" }, StringSplitOptions.None));
@@ -129,18 +130,6 @@ namespace MessengerBotManager
 
         private void Window_Closing(object sender, EventArgs e)
         {
-            new Thread(new ParameterizedThreadStart(delegate
-            {
-                for (int i = 1; i < 20; i++)
-                {
-                    Dispatcher.Invoke(new Action(delegate
-                    {
-                        progress.Value = i;
-                    }));
-                    Thread.Sleep(10);
-                }
-            })).Start();
-
             if(!Directory.Exists(Properties.Settings.Default.DataSavePath))
             {
                 try
@@ -163,26 +152,13 @@ namespace MessengerBotManager
 
             if(!File.Exists("adb.exe") || !File.Exists("AdbWinApi.dll") || !File.Exists("AdbWinUsbApi.dll"))
             {
-                Title = "adb 추출중...";
-                label.Content = Title;
+                description.Content = "adb 추출중...";
                 File.WriteAllBytes("adb.exe", Properties.Resources.adb);
                 File.WriteAllBytes("AdbWinApi.dll", Properties.Resources.AdbWinApi);
                 File.WriteAllBytes("AdbWinUsbApi.dll", Properties.Resources.AdbWinApi);
-                new Thread(new ParameterizedThreadStart(delegate
-                {
-                    for (int i = 20; i < 40; i++)
-                    {
-                        Dispatcher.Invoke(new Action(delegate
-                        {
-                            progress.Value = i;
-                        }));
-                        Thread.Sleep(10);
-                    }
-                })).Start();
             }
 
-            Title = "파일 동기화중...";
-            label.Content = Title;
+            description.Content = "파일 동기화중...";
 
             if (Process.GetProcessesByName("adb.exe").Length != 0) 
             {
@@ -197,9 +173,31 @@ namespace MessengerBotManager
             proinfo.UseShellExecute = false;
             proinfo.CreateNoWindow = true;
             process.StartInfo = proinfo;
+
+            description.Content = "adb 연결 확인중...";
+            proinfo.Arguments = "shell ls";
+            process.Start();
+            process.WaitForExit();
+            if(process.ExitCode != 0)
+            {
+                TaskDialog taskDialog = new TaskDialog();
+                taskDialog.MainIcon = TaskDialogIcon.Error;
+                taskDialog.Content = "휴대폰을 인식할 수 없습니다.\n휴대폰 연결 및 USB 디버깅 허용후 다시 시도해주세요.";
+                taskDialog.ExpandedInformation = process.StandardOutput.ReadToEnd();    
+                TaskDialogButton button1 = new TaskDialogButton();
+                button1.ButtonType = ButtonType.Retry;
+                TaskDialogButton button2 = new TaskDialogButton();
+                button2.ButtonType = ButtonType.Cancel;
+                taskDialog.Buttons.Add(button1);
+                taskDialog.Buttons.Add(button2);
+                process.StandardOutput.Close();
+                if (button1 == taskDialog.Show()) Window_Closing(null, null);
+            }
+
             foreach (string i in Adb_getFiles(Properties.Settings.Default.MessengerBotRPath))
             {
-                Console.WriteLine(i);
+                //Console.WriteLine(i);
+                description.Content = "파일 동기화중... " + i;
                 string directory = PathCombine(Properties.Settings.Default.DataSavePath, '\\', Path.GetDirectoryName(i.Replace(Properties.Settings.Default.MessengerBotRPath, ""))).Replace(Properties.Settings.Default.MessengerBotRPath, "");
                 if (!Directory.Exists(directory))
                 {
@@ -215,7 +213,7 @@ namespace MessengerBotManager
 
         private void Process_Exited(object sender, EventArgs e)
         {
-            Console.WriteLine(process.ExitCode);
+            //Console.WriteLine(process.ExitCode);
             if(process.ExitCode != 0)
             {
                 TaskDialog taskDialog = new TaskDialog();
@@ -247,23 +245,9 @@ namespace MessengerBotManager
                     if (button1 == taskDialog.Show()) Window_Closing(null, null);
                 }
             }
-            Title = "완료됨!";
-            label.Content = Title;
-            new Thread(new ParameterizedThreadStart(delegate
-            {
-                for (int i = 40; i <= 100; i++)
-                {
-                    Dispatcher.Invoke(new Action(delegate
-                    {
-                        progress.Value = i;
-                    }));
-                    Thread.Sleep(10);
-                }
-                Dispatcher.Invoke(new Action(delegate
-                {
-                    Close();
-                }));
-            })).Start();
+            description.Content = "완료!";
+
+            Close();
         }
     }
 }

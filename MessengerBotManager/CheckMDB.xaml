@@ -11,7 +11,7 @@
             <RowDefinition Height="50*"/>
             <RowDefinition Height="50*"/>
         </Grid.RowDefinitions>
-        <Label x:Name="label" Content="설정 로드중..." VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-        <ProgressBar x:Name="progress" Grid.Row="1" VerticalAlignment="Top" Height="20" Margin="20 0 20 0"/>
+        <Label x:Name="label" Content="설정 로드중..." VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Center"/>
+        <Label x:Name="description" Grid.Row="1" VerticalAlignment="Top" FontSize="10" Content="기본 설정 확인중..." Height="30" HorizontalAlignment="Center"/>
     </Grid>
 </Window>
