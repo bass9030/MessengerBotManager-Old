@@ -26,7 +26,6 @@ namespace MessengerBotManager
 
         private void CheckMDB_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Activate();
             if (Properties.Settings.Default.MessengerBotRPath == "" || 
                 Properties.Settings.Default.DataSavePath == "")
             {
@@ -146,7 +145,6 @@ namespace MessengerBotManager
                     dialog.Buttons.Add(button1);
                     dialog.ExpandedInformation = ex.ToString();
                     dialog.Show();
-
                 }
             }
 
@@ -182,8 +180,7 @@ namespace MessengerBotManager
             {
                 TaskDialog taskDialog = new TaskDialog();
                 taskDialog.MainIcon = TaskDialogIcon.Error;
-                taskDialog.Content = "휴대폰을 인식할 수 없습니다.\n휴대폰 연결 및 USB 디버깅 허용후 다시 시도해주세요.";
-                taskDialog.ExpandedInformation = process.StandardOutput.ReadToEnd();    
+                taskDialog.Content = "휴대폰을 인식할 수 없습니다.\n휴대폰 연결 및 USB 디버깅 허용후 다시 시도해주세요.";   
                 TaskDialogButton button1 = new TaskDialogButton();
                 button1.ButtonType = ButtonType.Retry;
                 TaskDialogButton button2 = new TaskDialogButton();
@@ -192,6 +189,11 @@ namespace MessengerBotManager
                 taskDialog.Buttons.Add(button2);
                 process.StandardOutput.Close();
                 if (button1 == taskDialog.Show()) Window_Closing(null, null);
+                else
+                {
+                    Close();
+                    return;
+                }
             }
 
             foreach (string i in Adb_getFiles(Properties.Settings.Default.MessengerBotRPath))
@@ -235,7 +237,6 @@ namespace MessengerBotManager
                 else
                 {
                     taskDialog.Content = "휴대폰을 인식할 수 없습니다.\n휴대폰 연결 및 USB 디버깅 허용후 다시 시도해주세요.";
-                    taskDialog.ExpandedInformation = result;
                     TaskDialogButton button1 = new TaskDialogButton();
                     button1.ButtonType = ButtonType.Retry;
                     TaskDialogButton button2 = new TaskDialogButton();

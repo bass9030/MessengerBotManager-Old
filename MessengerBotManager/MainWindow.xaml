@@ -29,17 +29,33 @@
                 <ColumnDefinition Width="315*"/>
             </Grid.ColumnDefinitions>
 
-            <ListView x:Name="Bots" Grid.Column="0"/>
+            <ListView x:Name="Bots" Grid.Column="0" ItemsSource="{Binding botInfos}"
+                      SelectedItem="{Binding SelectedBot, RelativeSource={RelativeSource AncestorType=Window}}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50*"/>
+                                <RowDefinition Height="50*"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="{Binding Name}" HorizontalAlignment="Left" Margin="0 5 0 0"/>
+                            <ToggleButton IsChecked="{Binding Power}"></ToggleButton>
+                            <Button x:Name="compile" Grid.Row="1"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListView>
+            
             <Frame Source="/MessengerBotManager;component/Editor.xaml" Grid.Column="1"/>
             <Grid Background="Gray" Grid.Column="2"/>
 
 
-            <Label x:Name="Grid2Control" Content="" Grid.Column="2" Margin="-15 0 0 0" HorizontalAlignment="Left" Width="30"  
+            <Label x:Name="Grid2Control" Content="" Grid.Column="2" Margin="-7.5 0 0 0" HorizontalAlignment="Left" Width="15"  
                 PreviewMouseDown="Grid2Control_MouseDown" 
                 PreviewMouseUp="Grid2Control_MouseUp"
                 PreviewMouseMove="Grid2Control_MouseMove" Cursor="SizeWE">
             </Label>
-            <Label x:Name="Grid1Control" Content="" Grid.Column="0" Margin="0 0 -15 0" HorizontalAlignment="Right" Width="30" 
+            <Label x:Name="Grid1Control" Content="" Grid.Column="0" Margin="0 0 -7.5 0" HorizontalAlignment="Right" Width="15" 
                 PreviewMouseDown="Grid1Control_MouseDown" 
                 PreviewMouseUp="Grid1Control_MouseUp"
                 PreviewMouseMove="Grid1Control_MouseMove" Cursor="SizeWE">

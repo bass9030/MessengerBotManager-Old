@@ -1,5 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Mdb;
+using System.Windows;
 using System.Windows.Input;
+using Newtonsoft.Json.Linq;
 
 namespace MessengerBotManager
 {
@@ -10,7 +15,19 @@ namespace MessengerBotManager
     {
         bool grid1Drag = false;
         bool grid2Drag = false;
+        FileSystemWatcher watcher;
+        MDB mdb;
 
+        public class BotInfo
+        {
+            public string Name { get; set; }
+            public bool Power { get; set; }
+            public bool IsCompiled { get; set; }
+            public string Path { get; set; }
+        }
+
+        public BotInfo SelectedBot { get; set; }
+        public List<BotInfo> botInfos = new List<BotInfo>();
 
         public MainWindow()
         {
@@ -18,11 +35,75 @@ namespace MessengerBotManager
             Loaded += MainWindow_Loaded;
         }
 
+        private void Watcher_Renamed(object sender, RenamedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             Window window = new CheckMDB();
+            window.Closed += Window_Closed;
             window.Show();
-            window.Activate();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Console.WriteLine("asdf");
+            mdb = new MDB(new ADB("adb.exe"));
+            watcher = new FileSystemWatcher()
+            {
+                Path = Properties.Settings.Default.DataSavePath,
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.Size,
+                Filter = "*.*",
+                IncludeSubdirectories = true,
+                EnableRaisingEvents = true,
+            };
+            watcher.Changed += Watcher_Changed;
+            watcher.Created += Watcher_Changed;
+            watcher.Deleted += Watcher_Changed;
+            watcher.Renamed += Watcher_Renamed;
+            //string[] files = GetFiles(Properties.Settings.Default.DataSavePath, )
+            foreach (string i in Directory.GetDirectories(Properties.Settings.Default.DataSavePath))
+            {
+                Console.WriteLine(Path.Combine(Properties.Settings.Default.DataSavePath, 
+                    i.Split('\\')[i.Split('\\').Length - 1], 
+                    i.Split('\\')[i.Split('\\').Length - 1] + ".js"));
+                if (File.Exists(Path.Combine(Properties.Settings.Default.DataSavePath,
+                    i.Split('\\')[i.Split('\\').Length - 1],
+                    i.Split('\\')[i.Split('\\').Length - 1] + ".js")))
+                {
+                    Console.WriteLine(i);
+                    JObject bot = JObject.Parse(File.ReadAllText(Path.Combine(i, "bot.json")));
+                    BotInfo info = new BotInfo() {
+                        IsCompiled = false,
+                        Name = i.Split('\\')[i.Split('\\').Length - 1],
+                        Path = Path.Combine(Properties.Settings.Default.DataSavePath,
+                            i.Split('\\')[i.Split('\\').Length - 1],
+                            i.Split('\\')[i.Split('\\').Length - 1] + ".js"),
+                        Power = bot["option"]["scriptPower"].ToObject<bool>()
+                    };
+                    botInfos.Add(info);
+                }
+            }
+            Bots.Items.Refresh();
+        }
+
+        private string[] GetFiles(string path, string partten = "*.*")
+        {
+            List<string> result = new List<string>();
+            result.AddRange(Directory.GetFiles(path));
+            foreach(string i in Directory.GetDirectories(path))
+            {
+                result.AddRange(GetFiles(i));
+            }
+
+            return result.ToArray();
         }
 
         private void Grid1Control_MouseDown(object sender, MouseButtonEventArgs e)
@@ -43,8 +124,8 @@ namespace MessengerBotManager
             if(grid1Drag)
             {
                 Point mp = e.GetPosition(Grid1Control);
-                double newX = grid.ColumnDefinitions[0].Width.Value + mp.X - 15;
-                double codeX = grid.ColumnDefinitions[1].Width.Value - mp.X + 15;
+                double newX = grid.ColumnDefinitions[0].Width.Value + mp.X - 7.5;
+                double codeX = grid.ColumnDefinitions[1].Width.Value - mp.X + 7.5;
                 if (codeX < 0) codeX = 0;
                 grid.ColumnDefinitions[1].Width = new GridLength(codeX, GridUnitType.Star);
                 if (newX < 0) newX = 0;
@@ -70,8 +151,8 @@ namespace MessengerBotManager
             if (grid2Drag)
             {
                 Point mp = e.GetPosition(Grid2Control);
-                double newX = grid.ColumnDefinitions[2].Width.Value - mp.X + 15;
-                double codeX = grid.ColumnDefinitions[1].Width.Value + mp.X - 15;
+                double newX = grid.ColumnDefinitions[2].Width.Value - mp.X + 7.5;
+                double codeX = grid.ColumnDefinitions[1].Width.Value + mp.X - 7.5;
                 if (codeX < 0) codeX = 0;
                 grid.ColumnDefinitions[1].Width = new GridLength(codeX, GridUnitType.Star);
                 if (newX < 0) newX = 0;
