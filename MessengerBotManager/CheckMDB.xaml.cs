@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using Mdb;
@@ -26,10 +27,6 @@ namespace MessengerBotManager
         private void CheckMDB_Loaded(object sender, RoutedEventArgs e)
         {
             this.Activate();
-            foreach (string i in Adb_getFiles("/sdcard/msgbot/Bots"))
-            {
-                Console.WriteLine(i);
-            }
             if (Properties.Settings.Default.MessengerBotRPath == "" || 
                 Properties.Settings.Default.DataSavePath == "")
             {
@@ -70,15 +67,16 @@ namespace MessengerBotManager
             }
             List<string> Directory = new List<string>();
             Directory.AddRange(output.Split(new string[] { "\r\n" }, StringSplitOptions.None));
-            proinfo.Arguments = $"shell ls {directory}";
+            proinfo.Arguments = $"shell ls -d {PathCombine(directory, '/', "*")}";
             adb.Start();
             adb.WaitForExit();
             string[] _tmpResult = adb.StandardOutput.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.None);
             foreach (string i in _tmpResult)
             {
-                if (!Array.Exists(_tmpResult, e => e == i) && result.IndexOf(i) == -1 && i != "")
+                //Console.WriteLine(i);
+                if (Regex.IsMatch(i, "(.+\\..+)$") && result.IndexOf(i) == -1 && i != "")
                 {
-                    result.Add(PathCombine(directory, '/', i));
+                    result.Add(i);
                 }
             }
             foreach(string i in Directory)
@@ -115,7 +113,8 @@ namespace MessengerBotManager
             foreach (var path in paths)
             {
                 pathSb.Append(separator);
-                pathSb.Append(path);
+                if (slash.Contains(path[0])) pathSb.Append(path.Substring(1, path.Length - 1));
+                else pathSb.Append(path);
                 removeLastSlash(pathSb);
             }
             #endregion Combine
@@ -185,17 +184,32 @@ namespace MessengerBotManager
             Title = "파일 동기화중...";
             label.Content = Title;
 
+            if (Process.GetProcessesByName("adb.exe").Length != 0) 
+            {
+                foreach (Process i in Process.GetProcessesByName("adb.exe")) i.Kill();
+            }
+
             process = new Process();
             ProcessStartInfo proinfo = new ProcessStartInfo();
             proinfo.FileName = "adb.exe";
-            proinfo.Arguments = $"pull {Properties.Settings.Default.MessengerBotRPath} {Properties.Settings.Default.DataSavePath}";
             proinfo.StandardOutputEncoding = Encoding.UTF8;
             proinfo.RedirectStandardOutput = true;
             proinfo.UseShellExecute = false;
             proinfo.CreateNoWindow = true;
             process.StartInfo = proinfo;
-            process.Start();
-            process.WaitForExit();
+            foreach (string i in Adb_getFiles(Properties.Settings.Default.MessengerBotRPath))
+            {
+                Console.WriteLine(i);
+                string directory = PathCombine(Properties.Settings.Default.DataSavePath, '\\', Path.GetDirectoryName(i.Replace(Properties.Settings.Default.MessengerBotRPath, ""))).Replace(Properties.Settings.Default.MessengerBotRPath, "");
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                proinfo.Arguments = $"pull {i} {PathCombine(directory, '\\', Path.GetFileName(i))}";
+                process.Start();
+                process.WaitForExit();
+            }
             Process_Exited(null, null);
         }
 
