@@ -91,7 +91,7 @@ namespace MessengerBotManager
                     botInfos.Add(info);
                 }
             }
-            Bots.Items.Refresh();
+            Bots.ItemsSource = botInfos;
         }
 
         private string[] GetFiles(string path, string partten = "*.*")
