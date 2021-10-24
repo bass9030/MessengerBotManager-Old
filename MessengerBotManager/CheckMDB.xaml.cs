@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
+using MahApps.Metro.Controls;
 using Mdb;
 using Ookii.Dialogs.Wpf;
 
@@ -15,7 +16,7 @@ namespace MessengerBotManager
     /// <summary>
     /// CheckMDB.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class CheckMDB : Window
+    public partial class CheckMDB : MetroWindow
     {
         Process process;
         public CheckMDB()
