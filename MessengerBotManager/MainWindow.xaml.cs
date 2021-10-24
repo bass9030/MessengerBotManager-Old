@@ -6,6 +6,9 @@ using System.Windows;
 using System.Windows.Input;
 using Newtonsoft.Json.Linq;
 using MahApps.Metro.Controls;
+using System.Windows.Controls;
+using System.Linq;
+using System.Windows.Media;
 
 namespace MessengerBotManager
 {
@@ -168,6 +171,112 @@ namespace MessengerBotManager
         private void settings(object sender, RoutedEventArgs e)
         {
             new Window1().Show();
+        }
+
+        private void Bots_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (Bots.SelectedIndex == -1) return;
+            List<MetroTabItem> _list = new List<MetroTabItem>();
+            _list.AddRange(tab.Items.OfType<MetroTabItem>());
+            int result = _list.FindIndex(f => f.Name == ((BotInfo)Bots.SelectedItem).Name);
+            if (result != -1)
+            {
+                tab.SelectedIndex = result;
+                ((MetroTabItem)tab.Items[result]).Background = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
+                int index = 0;
+                foreach(MetroTabItem item in tab.Items)
+                {
+                    if (index == result)
+                    {
+                        index++;
+                        continue;
+                    }
+                    item.Background = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
+                    index++;
+                }
+                return;
+            }
+
+            Grid grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition()
+            {
+                Width = new GridLength(90, GridUnitType.Star)
+            });
+            grid.ColumnDefinitions.Add(new ColumnDefinition()
+            {
+                Width = new GridLength(10, GridUnitType.Star)
+            });
+
+            TextBlock label = new TextBlock()
+            {
+                Text = botInfos[Bots.SelectedIndex].Name,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(5),
+                FontSize = 15
+            };
+            if (Properties.Settings.Default.DarkMode) label.Foreground = Brushes.White;
+            Grid.SetColumn(label, 0);
+            grid.Children.Add(label);
+
+            Button button = new Button()
+            {
+                Content = "X",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            Grid.SetColumn(button, 1);
+            grid.Children.Add(button);
+
+            MetroTabItem tabItem = new MetroTabItem()
+            {
+                Header = grid,
+                Name = botInfos[Bots.SelectedIndex].Name
+            };
+            //tabItem.Background = Brushes.Gray;
+            Frame frame = new Frame();
+            Page page = new Page1(File.ReadAllText(botInfos[Bots.SelectedIndex].Path));
+            frame.Content = page;
+
+            tabItem.Content = frame;
+
+
+            tab.Items.Add(tabItem);
+            tab.SelectedItem = tabItem;
+
+            ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.HighlightColor);
+            int index1 = 0;
+            foreach (MetroTabItem item in tab.Items)
+            {
+                if (index1 == tab.SelectedIndex)
+                {
+                    index1++;
+                    continue;
+                }
+                item.Background = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
+                index1++;
+            }
+        }
+
+        public static SolidColorBrush ToSolidColorBrush(string hex_code)
+        {
+            return (SolidColorBrush)new BrushConverter().ConvertFromString(hex_code);
+        }
+
+        private void tab_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.HighlightColor);
+            int index1 = 0;
+            foreach (MetroTabItem item in tab.Items)
+            {
+                if (index1 == tab.SelectedIndex)
+                {
+                    index1++;
+                    continue;
+                }
+                item.Background = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
+                index1++;
+            }
         }
     }
 }

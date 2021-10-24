@@ -28,7 +28,8 @@ namespace MessengerBotManager
     {
         FoldingManager foldingManager;
         BraceFoldingStrategy foldingStrategy;
-        public Page1()
+
+        public Page1(string code)
         {
             // Dark Mode
             // Background = "#FF1E1E1E" Foreground = "#FFF1F2F3" LineNumbersForeground = "#FF2B91AF" CurrentLineBackground = "#7F0F0F0F"
@@ -39,22 +40,27 @@ namespace MessengerBotManager
             InitializeComponent();
             foldingManager = FoldingManager.Install(Editor.TextArea);
             foldingStrategy = new BraceFoldingStrategy();
-            var test = HL.Manager.HighlightingLoader.LoadXshd(XmlReader.Create(new StringReader(Encoding.Default.GetString(Properties.Resources.JavaScript_Dark))));
+            var test = HL.Manager.HighlightingLoader.LoadXshd(XmlReader.Create(new StringReader(Encoding.Default.GetString(
+                Properties.Settings.Default.DarkMode ? Properties.Resources.JavaScript_Dark : Properties.Resources.JavaScript_White))));
+            Editor.Foreground = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
+            Editor.Background = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
+            Editor.LineNumbersForeground = ToSolidColorBrush(Properties.Settings.Default.LineNumberForegroundColor);
             Editor.SyntaxHighlighting = HighlightingLoader.Load(test, HighlightingManager.Instance);
             Editor.TextArea.TextView.BackgroundRenderers.Add(
-                new HighlightCurrentLineBackgroundRenderer(Editor, (Color)ColorConverter.ConvertFromString("#FFDFD991")));
+                new HighlightCurrentLineBackgroundRenderer(Editor, (Color)ColorConverter.ConvertFromString(Properties.Settings.Default.CurrentLineBackground)));
             Editor.TextChanged += Editor_TextChanged;
+            Editor.Text = code;
+        }
+
+        public static SolidColorBrush ToSolidColorBrush(string hex_code)
+        {
+            return (SolidColorBrush)new BrushConverter().ConvertFromString(hex_code);
         }
 
         private void Editor_TextChanged(object sender, EventArgs e)
         {
             //Console.WriteLine("Update");
             foldingStrategy.UpdateFoldings(foldingManager, Editor.Document);
-        }
-
-        public string Text
-        {
-            get { return Editor.Text; }
         }
     }
 }

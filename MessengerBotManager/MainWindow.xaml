@@ -10,18 +10,18 @@
                       WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="700*"/>
         </Grid.RowDefinitions>
 
         <Menu>
-            <MenuItem Header="파일" Height="25">
+            <MenuItem Header="파일" Height="30">
                 <MenuItem Header="새로 만들기" Click="makeNewBot"/>
                 <MenuItem Header="설정" Click="settings"/>
             </MenuItem>
-            <MenuItem Header="편집" Height="25"/>
-            <MenuItem Header="보기" Height="25"/>
-            <MenuItem Header="도움말" Height="25"/>
+            <MenuItem Header="편집" Height="30"/>
+            <MenuItem Header="보기" Height="30"/>
+            <MenuItem Header="도움말" Height="30"/>
         </Menu>
 
         <Grid x:Name="grid" Grid.Row="1">
@@ -32,7 +32,7 @@
             </Grid.ColumnDefinitions>
 
             <ListView x:Name="Bots" Grid.Column="0" ItemsSource="{Binding botInfos}"
-                      SelectedItem="{Binding SelectedBot, RelativeSource={RelativeSource AncestorType=Window}}">
+                      SelectedItem="{Binding SelectedBot, RelativeSource={RelativeSource AncestorType=Window}}" MouseDoubleClick="Bots_MouseDoubleClick">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="2" Height="100">
@@ -40,22 +40,20 @@
                                 <RowDefinition Height="50*"/>
                                 <RowDefinition Height="50*"/>
                             </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="70*"/>
-                                <ColumnDefinition Width="30*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="{Binding Name}" HorizontalAlignment="Left" Margin="0 5 0 0"/>
+                            <Label Content="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20" Margin="0 5 0 0"/>
                             <mah:ToggleSwitch 
                                 IsOn="{Binding Power}"  
                                 HorizontalAlignment="Right" Margin="5"
                                 Grid.Column="1"/>
-                            <Button x:Name="compile" Grid.Row="1"/>
+                            <Button x:Name="compile" Content="컴파일" Grid.Row="1"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListView>
-            
-            <Frame Source="/MessengerBotManager;component/Editor.xaml" Grid.Column="1"/>
+
+            <mah:MetroTabControl x:Name="tab" Grid.Column="1" SelectionChanged="tab_SelectionChanged">
+            </mah:MetroTabControl>
+
             <Grid Background="Gray" Grid.Column="2"/>
 
 

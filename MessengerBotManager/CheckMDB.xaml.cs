@@ -46,16 +46,17 @@ namespace MessengerBotManager
             List<string> result = new List<string>();
             if (directory.Length == 0) return result.ToArray();
             Process adb = new Process();
-            ProcessStartInfo proinfo = new ProcessStartInfo();
-            proinfo.FileName = "adb.exe";
-            //Console.WriteLine(directory + "(1)" + PathCombine(directory, '/', "*/"));
-            proinfo.Arguments = $"shell ls -d {PathCombine(directory, '/', "*/")}";
-            proinfo.StandardErrorEncoding = Encoding.UTF8;
-            proinfo.StandardOutputEncoding = Encoding.UTF8;
-            proinfo.RedirectStandardOutput = true;
-            proinfo.RedirectStandardError = true;
-            proinfo.UseShellExecute = false;
-            proinfo.CreateNoWindow = true;
+            ProcessStartInfo proinfo = new ProcessStartInfo
+            {
+                FileName = "adb.exe",
+                Arguments = $"shell ls -d {PathCombine(directory, '/', "*/")}",
+                StandardErrorEncoding = Encoding.UTF8,
+                StandardOutputEncoding = Encoding.UTF8,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
             adb.StartInfo = proinfo;
             adb.Start();
             adb.WaitForExit();
@@ -151,13 +152,19 @@ namespace MessengerBotManager
 
             if(!File.Exists("adb.exe") || !File.Exists("AdbWinApi.dll") || !File.Exists("AdbWinUsbApi.dll"))
             {
-                description.Content = "adb 추출중...";
+                Dispatcher.Invoke(new Action(delegate
+                {
+                    description.Content = "adb 추출중...";
+                }));
                 File.WriteAllBytes("adb.exe", Properties.Resources.adb);
                 File.WriteAllBytes("AdbWinApi.dll", Properties.Resources.AdbWinApi);
                 File.WriteAllBytes("AdbWinUsbApi.dll", Properties.Resources.AdbWinApi);
             }
 
-            description.Content = "파일 동기화중...";
+            Dispatcher.Invoke(new Action(delegate
+            {
+                description.Content = "파일 동기화중...";
+            }));
 
             if (Process.GetProcessesByName("adb.exe").Length != 0) 
             {
@@ -173,45 +180,73 @@ namespace MessengerBotManager
             proinfo.CreateNoWindow = true;
             process.StartInfo = proinfo;
 
-            description.Content = "adb 연결 확인중...";
+            Dispatcher.Invoke(new Action(delegate
+            {
+                description.Content = "adb 연결 확인중...";
+            }));
             proinfo.Arguments = "shell ls";
             process.Start();
-            process.WaitForExit();
-            if(process.ExitCode != 0)
+            new Thread(new ThreadStart(delegate
             {
-                TaskDialog taskDialog = new TaskDialog();
-                taskDialog.MainIcon = TaskDialogIcon.Error;
-                taskDialog.Content = "휴대폰을 인식할 수 없습니다.\n휴대폰 연결 및 USB 디버깅 허용후 다시 시도해주세요.";   
-                TaskDialogButton button1 = new TaskDialogButton();
-                button1.ButtonType = ButtonType.Retry;
-                TaskDialogButton button2 = new TaskDialogButton();
-                button2.ButtonType = ButtonType.Cancel;
-                taskDialog.Buttons.Add(button1);
-                taskDialog.Buttons.Add(button2);
-                process.StandardOutput.Close();
-                if (button1 == taskDialog.Show()) Window_Closing(null, null);
-                else
-                {
-                    Close();
-                    return;
-                }
-            }
-
-            foreach (string i in Adb_getFiles(Properties.Settings.Default.MessengerBotRPath))
-            {
-                //Console.WriteLine(i);
-                description.Content = "파일 동기화중... " + i;
-                string directory = PathCombine(Properties.Settings.Default.DataSavePath, '\\', Path.GetDirectoryName(i.Replace(Properties.Settings.Default.MessengerBotRPath, ""))).Replace(Properties.Settings.Default.MessengerBotRPath, "");
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-
-                proinfo.Arguments = $"pull {i} {PathCombine(directory, '\\', Path.GetFileName(i))}";
-                process.Start();
                 process.WaitForExit();
-            }
-            Process_Exited(null, null);
+                if (process.ExitCode != 0)
+                {
+                    TaskDialog taskDialog = new TaskDialog();
+                    taskDialog.MainIcon = TaskDialogIcon.Error;
+                    taskDialog.Content = "휴대폰을 인식할 수 없습니다.\n휴대폰 연결 및 USB 디버깅 허용후 다시 시도해주세요.";
+                    TaskDialogButton button1 = new TaskDialogButton();
+                    button1.ButtonType = ButtonType.Retry;
+                    TaskDialogButton button2 = new TaskDialogButton();
+                    button2.ButtonType = ButtonType.Cancel;
+                    taskDialog.Buttons.Add(button1);
+                    taskDialog.Buttons.Add(button2);
+                    process.StandardOutput.Close();
+                    if (button1 == taskDialog.Show()) Window_Closing(null, null);
+                    else
+                    {
+                        Close();
+                        return;
+                    }
+                }
+
+                foreach (string i in Adb_getFiles(Properties.Settings.Default.MessengerBotRPath))
+                {
+                    while (true)
+                    {
+                        Dispatcher.Invoke(new Action(delegate
+                        {
+                            description.Content = "파일 동기화중..." + i;
+                        }));
+                        string directory = PathCombine(Properties.Settings.Default.DataSavePath, '\\', Path.GetDirectoryName(i.Replace(Properties.Settings.Default.MessengerBotRPath, ""))).Replace(Properties.Settings.Default.MessengerBotRPath, "");
+                        if (!Directory.Exists(directory))
+                        {
+                            Directory.CreateDirectory(directory);
+                        }
+
+                        proinfo.Arguments = $"pull {i} {PathCombine(directory, '\\', Path.GetFileName(i))}";
+                        process.Start();
+                        process.WaitForExit();
+                        if (process.ExitCode != 0)
+                        {
+                            TaskDialog taskDialog = new TaskDialog();
+                            taskDialog.MainIcon = TaskDialogIcon.Error;
+                            taskDialog.WindowTitle = "동기화 실패";
+                            string result = process.StandardError.ReadToEnd();
+                            taskDialog.ExpandedInformation = result;
+                            TaskDialogButton button1 = new TaskDialogButton();
+                            button1.ButtonType = ButtonType.Retry;
+                            TaskDialogButton button2 = new TaskDialogButton();
+                            button2.ButtonType = ButtonType.Cancel;
+                            taskDialog.Buttons.Add(button1);
+                            taskDialog.Buttons.Add(button2);
+                            taskDialog.Content = $"'{i}'을(를) 동기화 중 adb에서 0이 아닌 값을 반환했습니다.\n다시 시도하시겠습니까?";
+                            if (taskDialog.Show().ButtonType == ButtonType.Retry) continue;
+                        }
+                        break;
+                    }
+                }
+                Process_Exited(null, null);
+            })).Start();
         }
 
         private void Process_Exited(object sender, EventArgs e)
@@ -247,9 +282,12 @@ namespace MessengerBotManager
                     if (button1 == taskDialog.Show()) Window_Closing(null, null);
                 }
             }
-            description.Content = "완료!";
 
-            Close();
+            Dispatcher.Invoke(new Action(delegate
+            {
+                description.Content = "완료!";
+                Close();
+            }));
         }
     }
 }

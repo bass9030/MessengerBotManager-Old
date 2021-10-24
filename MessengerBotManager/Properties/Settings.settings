@@ -8,5 +8,23 @@
     <Setting Name="DataSavePath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="BackgroundColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF1E1E1E</Value>
+    </Setting>
+    <Setting Name="ForegroundColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFF1F2F3</Value>
+    </Setting>
+    <Setting Name="LineNumberForegroundColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF2B91AF</Value>
+    </Setting>
+    <Setting Name="CurrentLineBackground" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#7F0F0F0F</Value>
+    </Setting>
+    <Setting Name="DarkMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="HighlightColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF6E6E6E</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
