@@ -5,13 +5,14 @@ using Mdb;
 using System.Windows;
 using System.Windows.Input;
 using Newtonsoft.Json.Linq;
+using MahApps.Metro.Controls;
 
 namespace MessengerBotManager
 {
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         bool grid1Drag = false;
         bool grid2Drag = false;
@@ -37,12 +38,12 @@ namespace MessengerBotManager
 
         private void Watcher_Renamed(object sender, RenamedEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
