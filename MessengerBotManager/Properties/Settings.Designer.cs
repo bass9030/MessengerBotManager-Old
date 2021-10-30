@@ -110,12 +110,12 @@ namespace MessengerBotManager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#FF6E6E6E")]
-        public string HighlightColor {
+        public string EnableColor {
             get {
-                return ((string)(this["HighlightColor"]));
+                return ((string)(this["EnableColor"]));
             }
             set {
-                this["HighlightColor"] = value;
+                this["EnableColor"] = value;
             }
         }
     }

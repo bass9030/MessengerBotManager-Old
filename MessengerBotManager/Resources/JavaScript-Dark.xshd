@@ -27,6 +27,7 @@
 			<Word>this</Word>
 			<Word>typeof</Word>
 			<Word>var</Word>
+			<Word>let</Word>
 			<Word>void</Word>
 			<Word>while</Word>
 			<Word>with</Word>

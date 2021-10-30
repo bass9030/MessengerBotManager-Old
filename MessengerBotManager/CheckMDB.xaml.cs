@@ -204,7 +204,10 @@ namespace MessengerBotManager
                     if (button1 == taskDialog.Show()) Window_Closing(null, null);
                     else
                     {
-                        Close();
+                        Dispatcher.Invoke(new Action(delegate
+                        {
+                            Close();
+                        }));
                         return;
                     }
                 }

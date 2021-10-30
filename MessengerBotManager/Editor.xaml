@@ -10,6 +10,6 @@
       Title="Page1">
 
     <Grid>
-        <avalonedit:TextEditor x:Name="Editor" SyntaxHighlighting="JavaScript" ShowLineNumbers="True"/>
+        <avalonedit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit" x:Name="Editor" SyntaxHighlighting="JavaScript" ShowLineNumbers="True"/>
     </Grid>
 </Page>

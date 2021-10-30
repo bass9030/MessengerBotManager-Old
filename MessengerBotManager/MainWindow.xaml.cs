@@ -244,7 +244,7 @@ namespace MessengerBotManager
             tab.Items.Add(tabItem);
             tab.SelectedItem = tabItem;
 
-            ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.HighlightColor);
+            ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.EnableColor);
             int index1 = 0;
             foreach (MetroTabItem item in tab.Items)
             {
@@ -265,7 +265,7 @@ namespace MessengerBotManager
 
         private void tab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.HighlightColor);
+            ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.EnableColor);
             int index1 = 0;
             foreach (MetroTabItem item in tab.Items)
             {

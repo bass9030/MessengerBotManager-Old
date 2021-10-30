@@ -23,7 +23,7 @@
     <Setting Name="DarkMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="HighlightColor" Type="System.String" Scope="User">
+    <Setting Name="EnableColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FF6E6E6E</Value>
     </Setting>
   </Settings>

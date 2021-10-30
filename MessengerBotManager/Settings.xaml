@@ -11,10 +11,66 @@
             <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
         <ListBox x:Name="Category" SelectionChanged="Category_Selected">
             <ListBoxItem Content="MDB"/>
             <ListBoxItem Content="파일"/>
             <ListBoxItem Content="에디터"/>
         </ListBox>
+
+        <Grid x:Name="editor" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30*"/>
+                <RowDefinition Height="60*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Header="기본 설정" Margin="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30*"/>
+                        <ColumnDefinition Width="70*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="기본테마" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="Themes"  VerticalAlignment="Center" Grid.Column="1" Margin="30 0 30 0" SelectedIndex="0">
+                        <ComboBoxItem Content="다크모드"></ComboBoxItem>
+                        <ComboBoxItem Content="라이트모드"></ComboBoxItem>
+                        <ComboBoxItem Content="커스텀"></ComboBoxItem>
+                    </ComboBox>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="커스텀" IsEnabled="True" Grid.Row="1" Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="30*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30*"/>
+                        <ColumnDefinition Width="70*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Content="배경색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="background" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="10"/>
+
+                    <Label Grid.Row="1" Content="전경색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="foreground" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10"/>
+                    
+                    <Label Grid.Row="2" Content="라인넘버 전경색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="lineNumber" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="10"/>
+
+                    <Label Grid.Row="3" IsEnabled="False" Content="선택라인 하이라이팅" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="currnetLineNumber" Grid.Column="1" Grid.Row="3" IsEnabled="False" VerticalAlignment="Center" Margin="10"/>
+                    
+                    <Label Grid.Row="4" Content="활성화 색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="enableColor" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="10"/>
+                    
+                </Grid>
+            </GroupBox>
+        </Grid>
     </Grid>
 </Window>
