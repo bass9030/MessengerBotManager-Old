@@ -19,8 +19,10 @@ namespace MessengerBotManager
     {
         bool grid1Drag = false;
         bool grid2Drag = false;
+        public bool adsf = false;
         FileSystemWatcher watcher;
         MDB mdb;
+        CheckMDB window;
 
         public class BotInfo
         {
@@ -37,6 +39,8 @@ namespace MessengerBotManager
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+            GlowBrush = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
+            Background = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
         }
 
         private void Watcher_Renamed(object sender, RenamedEventArgs e)
@@ -51,13 +55,14 @@ namespace MessengerBotManager
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Window window = new CheckMDB();
+            window = new CheckMDB();
             window.Closed += Window_Closed;
-            window.Show();
+            window.ShowDialog();
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            //if(window.offline)
             Console.WriteLine("asdf");
             mdb = new MDB(new ADB("adb.exe"));
             watcher = new FileSystemWatcher()
@@ -72,11 +77,17 @@ namespace MessengerBotManager
             watcher.Created += Watcher_Changed;
             watcher.Deleted += Watcher_Changed;
             watcher.Renamed += Watcher_Renamed;
+            Bots.ItemsSource = botInfos;
             //string[] files = GetFiles(Properties.Settings.Default.DataSavePath, )
+            refrashBots();
+        }
+
+        private void refrashBots()
+        {
             foreach (string i in Directory.GetDirectories(Properties.Settings.Default.DataSavePath))
             {
-                Console.WriteLine(Path.Combine(Properties.Settings.Default.DataSavePath, 
-                    i.Split('\\')[i.Split('\\').Length - 1], 
+                Console.WriteLine(Path.Combine(Properties.Settings.Default.DataSavePath,
+                    i.Split('\\')[i.Split('\\').Length - 1],
                     i.Split('\\')[i.Split('\\').Length - 1] + ".js"));
                 if (File.Exists(Path.Combine(Properties.Settings.Default.DataSavePath,
                     i.Split('\\')[i.Split('\\').Length - 1],
@@ -84,7 +95,8 @@ namespace MessengerBotManager
                 {
                     Console.WriteLine(i);
                     JObject bot = JObject.Parse(File.ReadAllText(Path.Combine(i, "bot.json")));
-                    BotInfo info = new BotInfo() {
+                    BotInfo info = new BotInfo()
+                    {
                         IsCompiled = false,
                         Name = i.Split('\\')[i.Split('\\').Length - 1],
                         Path = Path.Combine(Properties.Settings.Default.DataSavePath,
@@ -95,7 +107,7 @@ namespace MessengerBotManager
                     botInfos.Add(info);
                 }
             }
-            Bots.ItemsSource = botInfos;
+            Bots.Items.Refresh();
         }
 
         private string[] GetFiles(string path, string partten = "*.*")
@@ -170,7 +182,7 @@ namespace MessengerBotManager
 
         private void settings(object sender, RoutedEventArgs e)
         {
-            new Window1().Show();
+            new Window1().ShowDialog();
         }
 
         private void Bots_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -215,7 +227,7 @@ namespace MessengerBotManager
                 Margin = new Thickness(5),
                 FontSize = 15
             };
-            if (Properties.Settings.Default.DarkMode) label.Foreground = Brushes.White;
+            label.Foreground = ToSolidColorBrush(Properties.Settings.Default.FontColor);
             Grid.SetColumn(label, 0);
             grid.Children.Add(label);
 

@@ -19,6 +19,7 @@ namespace MessengerBotManager
     public partial class CheckMDB : MetroWindow
     {
         Process process;
+        public bool offline = false;
         public CheckMDB()
         {
             InitializeComponent();            
@@ -32,7 +33,7 @@ namespace MessengerBotManager
             {
                 Window window = new FirstSettings();
                 window.Closed += Window_Closing;
-                window.Show();
+                window.ShowDialog();
             }
             else
             {
@@ -146,7 +147,7 @@ namespace MessengerBotManager
                     button1.ButtonType = ButtonType.Ok;
                     dialog.Buttons.Add(button1);
                     dialog.ExpandedInformation = ex.ToString();
-                    dialog.Show();
+                    dialog.ShowDialog();
                 }
             }
 
@@ -201,9 +202,10 @@ namespace MessengerBotManager
                     taskDialog.Buttons.Add(button1);
                     taskDialog.Buttons.Add(button2);
                     process.StandardOutput.Close();
-                    if (button1 == taskDialog.Show()) Window_Closing(null, null);
+                    if (button1 == taskDialog.ShowDialog()) Window_Closing(null, null);
                     else
                     {
+                        offline = true;
                         Dispatcher.Invoke(new Action(delegate
                         {
                             Close();
@@ -243,7 +245,7 @@ namespace MessengerBotManager
                             taskDialog.Buttons.Add(button1);
                             taskDialog.Buttons.Add(button2);
                             taskDialog.Content = $"'{i}'을(를) 동기화 중 adb에서 0이 아닌 값을 반환했습니다.\n다시 시도하시겠습니까?";
-                            if (taskDialog.Show().ButtonType == ButtonType.Retry) continue;
+                            if (taskDialog.ShowDialog().ButtonType == ButtonType.Retry) continue;
                         }
                         break;
                     }
@@ -271,7 +273,7 @@ namespace MessengerBotManager
                     taskDialog.Buttons.Add(button1);
                     taskDialog.Buttons.Add(button2);
                     taskDialog.Content = "adb에서 0이 아닌 값을 반환했습니다.\n다시 시도하시겠습니까?";
-                    if (button1 == taskDialog.Show()) Window_Closing(null, null);
+                    if (button1 == taskDialog.ShowDialog()) Window_Closing(null, null);
                 }
                 else
                 {
@@ -282,7 +284,8 @@ namespace MessengerBotManager
                     button2.ButtonType = ButtonType.Cancel;
                     taskDialog.Buttons.Add(button1);
                     taskDialog.Buttons.Add(button2);
-                    if (button1 == taskDialog.Show()) Window_Closing(null, null);
+                    if (button1 == taskDialog.ShowDialog()) Window_Closing(null, null);
+                    else offline = true;
                 }
             }
 

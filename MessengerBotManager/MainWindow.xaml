@@ -5,10 +5,9 @@
                       Title="Messenger Bot Manager"
                       Height="900" Width="1600"
 
-                      GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-
                       WindowStartupLocation="CenterScreen">
-    <Grid>
+
+    <Grid x:Name="maingrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="700*"/>

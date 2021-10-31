@@ -26,5 +26,11 @@
     <Setting Name="EnableColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FF6E6E6E</Value>
     </Setting>
+    <Setting Name="xshdPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FontColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFFFFFF</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
