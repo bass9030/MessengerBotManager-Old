@@ -46,11 +46,11 @@ namespace MessengerBotManager
 
             // 문법 하이라이팅
             var test = HL.Manager.HighlightingLoader.LoadXshd(XmlReader.Create(new StringReader(Encoding.Default.GetString(
-                Properties.Settings.Default.DarkMode ? Properties.Resources.JavaScript_Dark : Properties.Resources.JavaScript_White))));
+                (Properties.Settings.Default.xshdPath == "JavaScript_Dark") ? Properties.Resources.JavaScript_Dark : Properties.Resources.JavaScript_White))));
             Editor.SyntaxHighlighting = HighlightingLoader.Load(test, HighlightingManager.Instance);
 
             // 에디터 백/포그라운드
-            Editor.Foreground = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
+            Editor.Foreground = ToSolidColorBrush(Properties.Settings.Default.FontColor);
             Editor.Background = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
 
             // 라인넘버

@@ -39,8 +39,12 @@ namespace MessengerBotManager
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
-            GlowBrush = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
-            Background = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
+            //GlowBrush = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
+            //WindowTitleBrush = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
+            App.Current.Resources["MahApps.Brushes.ThemeBackground"] = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
+            App.Current.Resources["MahApps.Brushes.IdealForeground"] = ToSolidColorBrush(Properties.Settings.Default.FontColor);
+            App.Current.Resources["MahApps.Brushes.ThemeForeground"] = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
+            App.Current.Resources["MahApps.Brushes.Text"] = ToSolidColorBrush(Properties.Settings.Default.FontColor);
         }
 
         private void Watcher_Renamed(object sender, RenamedEventArgs e)
@@ -57,7 +61,7 @@ namespace MessengerBotManager
         {
             window = new CheckMDB();
             window.Closed += Window_Closed;
-            window.ShowDialog();
+            window.Show();
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -256,7 +260,7 @@ namespace MessengerBotManager
             tab.Items.Add(tabItem);
             tab.SelectedItem = tabItem;
 
-            ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.EnableColor);
+            ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
             int index1 = 0;
             foreach (MetroTabItem item in tab.Items)
             {
@@ -277,7 +281,7 @@ namespace MessengerBotManager
 
         private void tab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.EnableColor);
+            ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
             int index1 = 0;
             foreach (MetroTabItem item in tab.Items)
             {

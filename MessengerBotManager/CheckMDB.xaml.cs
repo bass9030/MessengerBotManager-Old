@@ -65,7 +65,7 @@ namespace MessengerBotManager
             string error = adb.StandardError.ReadToEnd();
             if (error != "")
             {
-                if (error.IndexOf("no devices/emulators found") != -1) throw new Exception(error);
+                if (error.IndexOf("no devices/emulators found") != -1) return new string[] { "error" };
                 else return result.ToArray();
             }
             List<string> Directory = new List<string>();
@@ -202,7 +202,11 @@ namespace MessengerBotManager
                     taskDialog.Buttons.Add(button1);
                     taskDialog.Buttons.Add(button2);
                     process.StandardOutput.Close();
-                    if (button1 == taskDialog.ShowDialog()) Window_Closing(null, null);
+                    if (button1 == taskDialog.ShowDialog())
+                    {
+                        Window_Closing(null, null);
+                        return;
+                    }
                     else
                     {
                         offline = true;

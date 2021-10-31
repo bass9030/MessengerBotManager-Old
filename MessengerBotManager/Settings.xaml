@@ -5,7 +5,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="설정" Height="600" Width="900">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30*"/>
@@ -51,14 +53,14 @@
                         <RowDefinition Height="50*"/>
                     </Grid.RowDefinitions>
                     <Label Content="기본테마" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <ComboBox x:Name="Themes"  VerticalAlignment="Center" Grid.Column="1" Margin="30 0 30 0" SelectedIndex="0" SelectionChanged="Themes_SelectionChanged">
+                    <ComboBox x:Name="Themes"  VerticalAlignment="Center" Grid.Column="1" Margin="30 0 30 0" SelectedIndex="0" SelectionChanged="Themes_SelectionChanged" Background="{DynamicResource MahApps.Brushes.ThemeForeground}">
                         <ComboBoxItem Content="다크모드"></ComboBoxItem>
                         <ComboBoxItem Content="라이트모드"></ComboBoxItem>
                         <ComboBoxItem Content="커스텀"></ComboBoxItem>
                     </ComboBox>
 
                     <Label Content="문법 하이라이팅 컬러" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <ComboBox x:Name="HighlightingThemes"  VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Margin="30 0 30 0" SelectedIndex="0" SelectionChanged="HighlightingThemes_SelectionChanged">
+                    <ComboBox x:Name="HighlightingThemes"  VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Margin="30 0 30 0" SelectedIndex="0" SelectionChanged="HighlightingThemes_SelectionChanged" Background="{DynamicResource MahApps.Brushes.ThemeForeground}">
                         <ComboBoxItem Content="다크모드"></ComboBoxItem>
                         <ComboBoxItem Content="라이트모드"></ComboBoxItem>
                         <ComboBoxItem Content="찾아보기..."></ComboBoxItem>
@@ -73,7 +75,6 @@
                         <RowDefinition Height="30*"/>
                         <RowDefinition Height="30*"/>
                         <RowDefinition Height="30*"/>
-                        <RowDefinition Height="30*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30*"/>
@@ -81,25 +82,25 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Row="0" Content="배경색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <mah:ColorPicker x:Name="background" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="10"/>
+                    <mah:ColorPicker x:Name="background" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="10" Background="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
 
                     <Label Grid.Row="1" Content="전경색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <mah:ColorPicker  x:Name="foreground" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10"/>
-                    
+                    <mah:ColorPicker  x:Name="foreground" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10" Background="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
+
                     <Label Grid.Row="2" Content="라인넘버 전경색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <mah:ColorPicker  x:Name="lineNumberForeground" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="10"/>
+                    <mah:ColorPicker  x:Name="lineNumberForeground" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="10" Background="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
 
                     <Label Grid.Row="3" IsEnabled="False" Content="선택라인 하이라이팅" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Label.ToolTip>
                             현재 하이라이팅이 텍스트 위에 씌어지는 문제로 사용이 불가능합니다.
                         </Label.ToolTip>
                     </Label>
-                    <Grid Grid.Column="1" Grid.Row="3">
+                    <Grid Grid.Column="1" Grid.Row="3" Margin="10 0 10 0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90*"/>
                             <ColumnDefinition Width="5*"/>
                         </Grid.ColumnDefinitions>
-                        <mah:ColorPicker  x:Name="currnetLineNumber" IsEnabled="False" VerticalAlignment="Center" Margin="10"/>
+                        <mah:ColorPicker  x:Name="currnetLineNumber" IsEnabled="False" VerticalAlignment="Center" Background="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
                         <Label Content="?" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Label.ToolTip>
                                 현재 하이라이팅이 텍스트 위에 씌어지는 문제로 사용이 불가능합니다.
@@ -107,13 +108,12 @@
                         </Label>
                     </Grid>
 
-                    <Label Grid.Row="4" Content="활성화 색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <mah:ColorPicker  x:Name="enableColor" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="10"/>
-
-                    <Label Grid.Row="5" Content="글자색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <mah:ColorPicker  x:Name="fontColor" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" Margin="10"/>
+                    <Label Grid.Row="4" Content="글자색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <mah:ColorPicker  x:Name="fontColor" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" Margin="10" Background="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
                 </Grid>
             </GroupBox>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1">
         </Grid>
     </Grid>
 </mah:MetroWindow>

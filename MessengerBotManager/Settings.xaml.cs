@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using ControlzEx.Theming;
+using MahApps.Metro.Controls;
 using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace MessengerBotManager
             InitializeComponent();
             selIndex = _selIndex;
             Loaded += Window1_Loaded;
+            //App.Current.Resources["MahApps.Brushes.ThemeBackground"] = new SolidColorBrush(HexToColor(Properties.Settings.Default.BackgroundColor));
+            //.Current.Resources["MahApps.Brushes.ThemeForeground"] = new SolidColorBrush(HexToColor(Properties.Settings.Default.ForegroundColor));
         }
 
         private void Window1_Loaded(object sender, RoutedEventArgs e)
@@ -43,7 +46,6 @@ namespace MessengerBotManager
                     foreground.SelectedColor = HexToColor("#FFF1F2F3");
                     lineNumberForeground.SelectedColor = HexToColor("#FF2B91AF");
                     currnetLineNumber.SelectedColor = HexToColor("#7F0F0F0F");
-                    enableColor.SelectedColor = HexToColor("#FFFFFFFF");
                     fontColor.SelectedColor = HexToColor("#FF6E6E6E");
                     break;
 
@@ -53,8 +55,7 @@ namespace MessengerBotManager
                     foreground.SelectedColor = HexToColor("#FF000000");
                     lineNumberForeground.SelectedColor = HexToColor("#FF808080");
                     currnetLineNumber.SelectedColor = HexToColor("#FFFCF3AE");
-                    enableColor.SelectedColor = HexToColor("#FF000000");
-                    fontColor.SelectedColor = HexToColor("#FF6E6E6E");
+                    fontColor.SelectedColor = HexToColor("#FF000000");
                     break;
 
                 case 2:
@@ -63,7 +64,6 @@ namespace MessengerBotManager
                     foreground.SelectedColor = HexToColor(Properties.Settings.Default.ForegroundColor);
                     lineNumberForeground.SelectedColor = HexToColor(Properties.Settings.Default.LineNumberForegroundColor);
                     currnetLineNumber.SelectedColor = HexToColor(Properties.Settings.Default.CurrentLineBackground);
-                    enableColor.SelectedColor = HexToColor(Properties.Settings.Default.EnableColor);
                     fontColor.SelectedColor = HexToColor(Properties.Settings.Default.FontColor);
                     break;
             }
@@ -124,7 +124,6 @@ namespace MessengerBotManager
                     foreground.SelectedColor = HexToColor("#FFF1F2F3");
                     lineNumberForeground.SelectedColor = HexToColor("#FF2B91AF");
                     currnetLineNumber.SelectedColor = HexToColor("#7F0F0F0F");
-                    enableColor.SelectedColor = HexToColor("#FFFFFFFF");
                     fontColor.SelectedColor = HexToColor("#FF6E6E6E");
                     break;
 
@@ -134,8 +133,7 @@ namespace MessengerBotManager
                     foreground.SelectedColor = HexToColor("#FF000000");
                     lineNumberForeground.SelectedColor = HexToColor("#FF808080");
                     currnetLineNumber.SelectedColor = HexToColor("#FFFCF3AE");
-                    enableColor.SelectedColor = HexToColor("#FF000000");
-                    fontColor.SelectedColor = HexToColor("#FF6E6E6E");
+                    fontColor.SelectedColor = HexToColor("#FF000000");
                     break;
 
                 case 2:
@@ -144,7 +142,6 @@ namespace MessengerBotManager
                     foreground.SelectedColor = HexToColor(Properties.Settings.Default.ForegroundColor);
                     lineNumberForeground.SelectedColor = HexToColor(Properties.Settings.Default.LineNumberForegroundColor);
                     currnetLineNumber.SelectedColor = HexToColor(Properties.Settings.Default.CurrentLineBackground);
-                    enableColor.SelectedColor = HexToColor(Properties.Settings.Default.EnableColor);
                     fontColor.SelectedColor = HexToColor(Properties.Settings.Default.FontColor);
                     break;
             }

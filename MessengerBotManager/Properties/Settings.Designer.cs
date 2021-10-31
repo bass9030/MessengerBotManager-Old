@@ -61,7 +61,7 @@ namespace MessengerBotManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#FFF1F2F3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FF6E6E6E")]
         public string ForegroundColor {
             get {
                 return ((string)(this["ForegroundColor"]));
@@ -97,31 +97,7 @@ namespace MessengerBotManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DarkMode {
-            get {
-                return ((bool)(this["DarkMode"]));
-            }
-            set {
-                this["DarkMode"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#FF6E6E6E")]
-        public string EnableColor {
-            get {
-                return ((string)(this["EnableColor"]));
-            }
-            set {
-                this["EnableColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("JavaScript_Dark")]
         public string xshdPath {
             get {
                 return ((string)(this["xshdPath"]));
@@ -133,7 +109,7 @@ namespace MessengerBotManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#FFFFFFFF")]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFF1F2F3")]
         public string FontColor {
             get {
                 return ((string)(this["FontColor"]));

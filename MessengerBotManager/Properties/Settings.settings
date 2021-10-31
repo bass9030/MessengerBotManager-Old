@@ -12,7 +12,7 @@
       <Value Profile="(Default)">#FF1E1E1E</Value>
     </Setting>
     <Setting Name="ForegroundColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFF1F2F3</Value>
+      <Value Profile="(Default)">#FF6E6E6E</Value>
     </Setting>
     <Setting Name="LineNumberForegroundColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FF2B91AF</Value>
@@ -20,17 +20,11 @@
     <Setting Name="CurrentLineBackground" Type="System.String" Scope="User">
       <Value Profile="(Default)">#7F0F0F0F</Value>
     </Setting>
-    <Setting Name="DarkMode" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="EnableColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FF6E6E6E</Value>
-    </Setting>
     <Setting Name="xshdPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">JavaScript_Dark</Value>
     </Setting>
     <Setting Name="FontColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#FFFFFFFF</Value>
+      <Value Profile="(Default)">#FFF1F2F3</Value>
     </Setting>
   </Settings>
 </SettingsFile>
