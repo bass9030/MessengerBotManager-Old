@@ -4,7 +4,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="설정" Height="600" Width="900">
     <Grid>
@@ -82,13 +81,13 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Row="0" Content="배경색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <xctk:ColorPicker x:Name="background" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="10"/>
+                    <mah:ColorPicker x:Name="background" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="10"/>
 
                     <Label Grid.Row="1" Content="전경색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <xctk:ColorPicker x:Name="foreground" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10"/>
+                    <mah:ColorPicker  x:Name="foreground" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10"/>
                     
                     <Label Grid.Row="2" Content="라인넘버 전경색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <xctk:ColorPicker x:Name="lineNumberForeground" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="10"/>
+                    <mah:ColorPicker  x:Name="lineNumberForeground" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="10"/>
 
                     <Label Grid.Row="3" IsEnabled="False" Content="선택라인 하이라이팅" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Label.ToolTip>
@@ -100,7 +99,7 @@
                             <ColumnDefinition Width="90*"/>
                             <ColumnDefinition Width="5*"/>
                         </Grid.ColumnDefinitions>
-                        <xctk:ColorPicker x:Name="currnetLineNumber" IsEnabled="False" VerticalAlignment="Center" Margin="10"/>
+                        <mah:ColorPicker  x:Name="currnetLineNumber" IsEnabled="False" VerticalAlignment="Center" Margin="10"/>
                         <Label Content="?" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Label.ToolTip>
                                 현재 하이라이팅이 텍스트 위에 씌어지는 문제로 사용이 불가능합니다.
@@ -109,10 +108,10 @@
                     </Grid>
 
                     <Label Grid.Row="4" Content="활성화 색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <xctk:ColorPicker x:Name="enableColor" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="10"/>
+                    <mah:ColorPicker  x:Name="enableColor" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" Margin="10"/>
 
                     <Label Grid.Row="5" Content="글자색" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <xctk:ColorPicker x:Name="fontColor" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" Margin="10"/>
+                    <mah:ColorPicker  x:Name="fontColor" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" Margin="10"/>
                 </Grid>
             </GroupBox>
         </Grid>
