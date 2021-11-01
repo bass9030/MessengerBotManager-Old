@@ -23,6 +23,8 @@ namespace MessengerBotManager
     public partial class Window1 : MetroWindow
     {
         int selIndex = 0;
+
+        public bool changed = false;
         public Window1(int _selIndex = 0)
         {
             InitializeComponent();
@@ -112,9 +114,11 @@ namespace MessengerBotManager
             // EnableColor = #FF6E6E6E
             if (Themes.SelectedIndex == -1 || background == null)
             {
-                Console.WriteLine("asdf");
                 return;
             }
+
+            changed = true;
+            apply.IsEnabled = changed;
 
             switch (Themes.SelectedIndex)
             {
@@ -149,19 +153,36 @@ namespace MessengerBotManager
 
         private void HighlightingThemes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(HighlightingThemes.SelectedIndex == 2)
+            if (HighlightingThemes.SelectedIndex == -1) return;
+
+            changed = true;
+            apply.IsEnabled = changed;
+
+            switch (HighlightingThemes.SelectedIndex)
             {
-                VistaOpenFileDialog fileopendialog = new VistaOpenFileDialog()
-                {
-                    DefaultExt = "xshd"
-                };
-                if ((bool)fileopendialog.ShowDialog())
-                {
-                    ((ComboBoxItem)HighlightingThemes.Items[HighlightingThemes.SelectedIndex]).Content = fileopendialog.FileName;
-                    //HighlightingThemes.SelectedIndex = HighlightingThemes.SelectedIndex;
-                    HighlightingThemes.Items.Refresh();
-                }
+                case 2:
+                    VistaOpenFileDialog fileopendialog = new VistaOpenFileDialog()
+                    {
+                        DefaultExt = "xshd"
+                    };
+                    if ((bool)fileopendialog.ShowDialog())
+                    {
+                        ((ComboBoxItem)HighlightingThemes.Items[HighlightingThemes.SelectedIndex]).Content = fileopendialog.FileName;
+                        //HighlightingThemes.SelectedIndex = HighlightingThemes.SelectedIndex;
+                        HighlightingThemes.Items.Refresh();
+                    }
+                    break;
             }
+        }
+
+        private void apply_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void cancel_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

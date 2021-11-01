@@ -28,8 +28,7 @@
                 <ColumnDefinition Width="315*"/>
             </Grid.ColumnDefinitions>
 
-            <ListView x:Name="Bots" Grid.Column="0" ItemsSource="{Binding botInfos}"
-                      SelectedItem="{Binding SelectedBot, RelativeSource={RelativeSource AncestorType=Window}}" MouseDoubleClick="Bots_MouseDoubleClick">
+            <ListView x:Name="Bots" Grid.Column="0" MouseDoubleClick="Bots_MouseDoubleClick">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="2" Height="100">
