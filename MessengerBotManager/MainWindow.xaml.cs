@@ -41,10 +41,10 @@ namespace MessengerBotManager
             Loaded += MainWindow_Loaded;
             //GlowBrush = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
             //WindowTitleBrush = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
-            App.Current.Resources["MahApps.Brushes.ThemeBackground"] = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
-            App.Current.Resources["MahApps.Brushes.IdealForeground"] = ToSolidColorBrush(Properties.Settings.Default.FontColor);
-            App.Current.Resources["MahApps.Brushes.ThemeForeground"] = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
-            App.Current.Resources["MahApps.Brushes.Text"] = ToSolidColorBrush(Properties.Settings.Default.FontColor);
+            //App.Current.Resources["MahApps.Brushes.ThemeBackground"] = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
+            //App.Current.Resources["MahApps.Brushes.IdealForeground"] = ToSolidColorBrush(Properties.Settings.Default.FontColor);
+            //App.Current.Resources["MahApps.Brushes.ThemeForeground"] = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
+            //App.Current.Resources["MahApps.Brushes.Text"] = ToSolidColorBrush(Properties.Settings.Default.FontColor);
         }
 
         private void Watcher_Renamed(object sender, RenamedEventArgs e)

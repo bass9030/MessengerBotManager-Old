@@ -41,7 +41,7 @@
                                 IsOn="{Binding Power}"  
                                 HorizontalAlignment="Right" Margin="5"
                                 Grid.Column="1"/>
-                            <Button x:Name="compile" Content="컴파일" Grid.Row="1" Background="{DynamicResource MahApps.Brushes.ThemeForeground}" Foreground="{DynamicResource MahApps.Brushes.IdealForeground}"/>
+                            <Button x:Name="compile" Content="컴파일" Grid.Row="1"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

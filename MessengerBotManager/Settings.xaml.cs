@@ -155,8 +155,11 @@ namespace MessengerBotManager
         {
             if (HighlightingThemes.SelectedIndex == -1) return;
 
-            changed = true;
-            apply.IsEnabled = changed;
+            if(apply != null)
+            {
+                changed = true;
+                apply.IsEnabled = changed;
+            }
 
             switch (HighlightingThemes.SelectedIndex)
             {
@@ -182,7 +185,21 @@ namespace MessengerBotManager
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
-
+            if(changed)
+            {
+                TaskDialog taskDialog = new TaskDialog();
+                taskDialog.MainIcon = TaskDialogIcon.Error;
+                taskDialog.WindowTitle = "동기화 실패";
+                TaskDialogButton button1 = new TaskDialogButton();
+                button1.ButtonType = ButtonType.Custom;
+                button1.Content
+                TaskDialogButton button2 = new TaskDialogButton();
+                button2.ButtonType = ButtonType.Cancel;
+                taskDialog.Buttons.Add(button1);
+                taskDialog.Buttons.Add(button2);
+                taskDialog.Content = $"변경된 사항이 있습니다. 저장하시겠습니까?";
+                if (taskDialog.ShowDialog().ButtonType == ButtonType.Retry) continue;
+            }
         }
     }
 }
