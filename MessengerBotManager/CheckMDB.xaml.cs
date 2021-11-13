@@ -204,6 +204,9 @@ namespace MessengerBotManager
                     process.StandardOutput.Close();
                     if (button1 == taskDialog.ShowDialog())
                     {
+                        proinfo.Arguments = "kill-server";
+                        process.Start();
+                        process.WaitForExit();
                         Window_Closing(null, null);
                         return;
                     }

@@ -26,5 +26,23 @@
     <Setting Name="FontColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FFF1F2F3</Value>
     </Setting>
+    <Setting Name="MDBPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9500</Value>
+    </Setting>
+    <Setting Name="isGroupChat" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="sender" Type="System.String" Scope="User">
+      <Value Profile="(Default)">sender</Value>
+    </Setting>
+    <Setting Name="room" Type="System.String" Scope="User">
+      <Value Profile="(Default)">room</Value>
+    </Setting>
+    <Setting Name="packageName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">com.kakao.talk</Value>
+    </Setting>
+    <Setting Name="themeIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -39,36 +39,7 @@ namespace MessengerBotManager
             Category.Focus();
             Category.SelectedIndex = selIndex;
 
-            //
-            switch (Themes.SelectedIndex)
-            {
-                case 0:
-                    custom.IsEnabled = false;
-                    background.SelectedColor = HexToColor("#FF1E1E1E");
-                    foreground.SelectedColor = HexToColor("#FFF1F2F3");
-                    lineNumberForeground.SelectedColor = HexToColor("#FF2B91AF");
-                    currnetLineNumber.SelectedColor = HexToColor("#7F0F0F0F");
-                    fontColor.SelectedColor = HexToColor("#FF6E6E6E");
-                    break;
-
-                case 1:
-                    custom.IsEnabled = false;
-                    background.SelectedColor = HexToColor("#FFFFFFFF");
-                    foreground.SelectedColor = HexToColor("#FF000000");
-                    lineNumberForeground.SelectedColor = HexToColor("#FF808080");
-                    currnetLineNumber.SelectedColor = HexToColor("#FFFCF3AE");
-                    fontColor.SelectedColor = HexToColor("#FF000000");
-                    break;
-
-                case 2:
-                    custom.IsEnabled = true;
-                    background.SelectedColor = HexToColor(Properties.Settings.Default.BackgroundColor);
-                    foreground.SelectedColor = HexToColor(Properties.Settings.Default.ForegroundColor);
-                    lineNumberForeground.SelectedColor = HexToColor(Properties.Settings.Default.LineNumberForegroundColor);
-                    currnetLineNumber.SelectedColor = HexToColor(Properties.Settings.Default.CurrentLineBackground);
-                    fontColor.SelectedColor = HexToColor(Properties.Settings.Default.FontColor);
-                    break;
-            }
+            loadSettings();
         }
 
         private void Category_Selected(object sender, RoutedEventArgs e)
@@ -84,6 +55,10 @@ namespace MessengerBotManager
 
             switch (Category.SelectedIndex)
             {
+                case 0:
+                    mdb.Visibility = Visibility.Visible;
+                    break;
+
                 case 2:
                     editor.Visibility = Visibility.Visible;
                     break;
@@ -117,9 +92,6 @@ namespace MessengerBotManager
                 return;
             }
 
-            changed = true;
-            apply.IsEnabled = changed;
-
             switch (Themes.SelectedIndex)
             {
                 case 0:
@@ -149,6 +121,9 @@ namespace MessengerBotManager
                     fontColor.SelectedColor = HexToColor(Properties.Settings.Default.FontColor);
                     break;
             }
+
+            changed = true;
+            apply.IsEnabled = changed;
         }
 
         private void HighlightingThemes_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -170,7 +145,10 @@ namespace MessengerBotManager
                     };
                     if ((bool)fileopendialog.ShowDialog())
                     {
-                        ((ComboBoxItem)HighlightingThemes.Items[HighlightingThemes.SelectedIndex]).Content = fileopendialog.FileName;
+                        ComboBoxItem item = new ComboBoxItem();
+                        item.Content = fileopendialog.FileName;
+                        HighlightingThemes.Items.Add(item);
+                        HighlightingThemes.SelectedItem = item;
                         //HighlightingThemes.SelectedIndex = HighlightingThemes.SelectedIndex;
                         HighlightingThemes.Items.Refresh();
                     }
@@ -185,21 +163,61 @@ namespace MessengerBotManager
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
-            if(changed)
+            if (changed)
             {
                 TaskDialog taskDialog = new TaskDialog();
-                taskDialog.MainIcon = TaskDialogIcon.Error;
-                taskDialog.WindowTitle = "동기화 실패";
-                TaskDialogButton button1 = new TaskDialogButton();
-                button1.ButtonType = ButtonType.Custom;
-                button1.Content
+                taskDialog.MainIcon = TaskDialogIcon.Warning;
+                taskDialog.WindowTitle = "경고";
+                TaskDialogButton button1 = new TaskDialogButton("저장");
                 TaskDialogButton button2 = new TaskDialogButton();
                 button2.ButtonType = ButtonType.Cancel;
                 taskDialog.Buttons.Add(button1);
                 taskDialog.Buttons.Add(button2);
                 taskDialog.Content = $"변경된 사항이 있습니다. 저장하시겠습니까?";
-                if (taskDialog.ShowDialog().ButtonType == ButtonType.Retry) continue;
+                if (taskDialog.ShowDialog() == button1) saveSettings();
+                else Close();
             }
+            else Close();
+        }
+
+        private void saveSettings()
+        {
+            //TODO: Save all settings
+        }
+
+        private void loadSettings()
+        {
+            //TODO: Load all settings
+            Themes.SelectedItem = Properties.Settings.Default.themeIndex;
+            switch(Properties.Settings.Default.xshdPath)
+            {
+                case "JavaScript_Dark":
+                    HighlightingThemes.SelectedIndex = 0;
+                    break;
+
+                case "JavaScript_White":
+                    HighlightingThemes.SelectedIndex = 0;
+                    break;
+
+                default:
+                    ComboBoxItem item = new ComboBoxItem();
+                    item.Content = Properties.Settings.Default.xshdPath;
+                    HighlightingThemes.Items.Add(item);
+                    HighlightingThemes.SelectedItem = item;
+                    HighlightingThemes.Items.Refresh();
+                    break;
+            }
+            portnum.Text = Properties.Settings.Default.MDBPort.ToString();
+            isGroupChat.IsOn = Properties.Settings.Default.isGroupChat;
+            sender.Text = Properties.Settings.Default.sender;
+            room.Text = Properties.Settings.Default.room;
+            packageName.Text = Properties.Settings.Default.packageName;
+        }
+
+        private void ok_Click(object sender, RoutedEventArgs e)
+        {
+            saveSettings();
+            Close();
         }
     }
 }

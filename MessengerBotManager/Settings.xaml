@@ -24,20 +24,39 @@
             <ListBoxItem Content="정보"/>
         </ListBox>
 
-        <Grid x:Name="mdb" Grid.Column="1" Visibility="Hidden">
+        <Grid x:Name="mdb" Grid.Column="1" Visibility="Visible">
             <GroupBox Header="디버그룸 설정" Margin="10">
-                <Grid>
+                <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30*"/>
-                        <RowDefinition Height="70*"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="30*"/>
                     </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30*"/>
+                        <ColumnDefinition Width="70*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="포트번호" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="portnum" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"/>
 
-                    <GroupBox Header="연결 설정" Margin="10"></GroupBox>
+                    <Label Content="그룹채팅 여부" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <mah:ToggleSwitch x:Name="isGroupChat" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    <Label Content="전송자" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="sender" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"/>
+
+                    <Label Content="방이름" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="room" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"/>
+
+                    <Label Content="패키지 이름" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="packageName" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center"/>
                 </Grid>
             </GroupBox>
         </Grid>
         
-        <Grid x:Name="editor" Grid.Column="1" Visibility="Visible">
+        <Grid x:Name="editor" Grid.Column="1" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30*"/>
                 <RowDefinition Height="60*"/>
@@ -139,7 +158,7 @@
                     <ColumnDefinition Width="10*"/>
                     <ColumnDefinition Width="10*"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="ok" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center" Content="확인" Width="70" Grid.Column="0" Margin="10" Click="apply_Click"/>
+                <Button x:Name="ok" HorizontalAlignment="Center" VerticalAlignment="Center" Content="확인" Width="70" Grid.Column="0" Margin="10" Click="ok_Click"/>
                 <Button x:Name="apply" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center" Content="적용" Width="70" Grid.Column="1" Margin="10" Click="apply_Click"/>
                 <Button x:Name="cancel" Content="취소" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Grid.Column="2" Margin="10" Click="cancel_Click"/>
             </Grid>

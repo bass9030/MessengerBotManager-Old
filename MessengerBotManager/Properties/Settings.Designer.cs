@@ -118,5 +118,77 @@ namespace MessengerBotManager.Properties {
                 this["FontColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9500")]
+        public int MDBPort {
+            get {
+                return ((int)(this["MDBPort"]));
+            }
+            set {
+                this["MDBPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool isGroupChat {
+            get {
+                return ((bool)(this["isGroupChat"]));
+            }
+            set {
+                this["isGroupChat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("sender")]
+        public string sender {
+            get {
+                return ((string)(this["sender"]));
+            }
+            set {
+                this["sender"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("room")]
+        public string room {
+            get {
+                return ((string)(this["room"]));
+            }
+            set {
+                this["room"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("com.kakao.talk")]
+        public string packageName {
+            get {
+                return ((string)(this["packageName"]));
+            }
+            set {
+                this["packageName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int themeIndex {
+            get {
+                return ((int)(this["themeIndex"]));
+            }
+            set {
+                this["themeIndex"] = value;
+            }
+        }
     }
 }
