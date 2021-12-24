@@ -55,6 +55,7 @@ namespace MessengerBotManager
                     {
                         TaskDialog dialog = new TaskDialog();
                         dialog.WindowTitle = "경고";
+                        dialog.MainIcon = TaskDialogIcon.Information;
                         dialog.Content = $"메신저봇 R의 루트 경로를 입력한것 같습니다.\n봇폴더로 변경하시겠습니까?\n(기존: {Path.Text} → 변경: {System.IO.Path.Combine(Path.Text, "Bots")}";
                         TaskDialogButton button1 = new TaskDialogButton();
                         button1.ButtonType = ButtonType.Yes;
@@ -73,6 +74,7 @@ namespace MessengerBotManager
                 catch 
                 {
                     TaskDialog taskDialog = new TaskDialog();
+                    taskDialog.MainIcon = TaskDialogIcon.Warning;
                     taskDialog.ExpandedInformation = output;
                     TaskDialogButton button1 = new TaskDialogButton();
                     button1.ButtonType = ButtonType.Yes;

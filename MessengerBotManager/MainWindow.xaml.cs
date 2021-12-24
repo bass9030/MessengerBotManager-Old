@@ -18,7 +18,7 @@ namespace MessengerBotManager
     public partial class MainWindow : MetroWindow
     {
         bool grid1Drag = false;
-        bool grid2Drag = false;
+        //bool grid2Drag = false;
         public bool adsf = false;
         FileSystemWatcher watcher;
         MDB mdb;
@@ -153,7 +153,7 @@ namespace MessengerBotManager
             }
         }
 
-        private void Grid2Control_MouseDown(object sender, MouseButtonEventArgs e)
+        /*private void Grid2Control_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Mouse.Capture(Grid2Control);
             grid2Drag = true;
@@ -178,7 +178,7 @@ namespace MessengerBotManager
                 if (newX < 0) newX = 0;
                 grid.ColumnDefinitions[2].Width = new GridLength(newX, GridUnitType.Star);
             }
-        }
+        }*/
 
         private void makeNewBot(object sender, RoutedEventArgs e)
         {

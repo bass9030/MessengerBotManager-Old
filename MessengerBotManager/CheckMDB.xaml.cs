@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -155,11 +157,26 @@ namespace MessengerBotManager
             {
                 Dispatcher.Invoke(new Action(delegate
                 {
-                    description.Content = "adb 추출중...";
+                    description.Content = "adb 다운로드중...";
                 }));
-                File.WriteAllBytes("adb.exe", Properties.Resources.adb);
-                File.WriteAllBytes("AdbWinApi.dll", Properties.Resources.AdbWinApi);
-                File.WriteAllBytes("AdbWinUsbApi.dll", Properties.Resources.AdbWinApi);
+                using (WebClient wc = new WebClient())
+                {
+                    File.WriteAllBytes("tmp.zip", wc.DownloadData("https://dl.google.com/android/repository/platform-tools-latest-windows.zip?hl=ko"));
+                    Dispatcher.Invoke(new Action(delegate
+                    {
+                        description.Content = "adb 압축 해제중...";
+                    }));
+                    using (ZipArchive archive = ZipFile.OpenRead(".\\tmp.zip"))
+                    {
+                        foreach (ZipArchiveEntry entry in archive.Entries)
+                        {
+                            if(entry.Name == "adb.exe" || entry.Name.StartsWith("AdbWin"))
+                            {
+                                entry.ExtractToFile(Path.Combine(".\\", entry.Name));
+                            }
+                        }
+                    }
+                }
             }
 
             Dispatcher.Invoke(new Action(delegate
