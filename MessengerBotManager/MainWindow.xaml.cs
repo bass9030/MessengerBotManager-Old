@@ -9,6 +9,7 @@ using MahApps.Metro.Controls;
 using System.Windows.Controls;
 using System.Linq;
 using System.Windows.Media;
+using Ookii.Dialogs.Wpf;
 
 namespace MessengerBotManager
 {
@@ -20,9 +21,12 @@ namespace MessengerBotManager
         bool grid1Drag = false;
         //bool grid2Drag = false;
         public bool adsf = false;
+        bool isBulitinEdit = false;
         FileSystemWatcher watcher;
         MDB mdb;
         CheckMDB window;
+        List<string> changeFiles = new List<string>();
+        string currentPath;
 
         public class BotInfo
         {
@@ -39,6 +43,7 @@ namespace MessengerBotManager
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+            Activated += MainWindow_Activated;
             //GlowBrush = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
             //WindowTitleBrush = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
             //App.Current.Resources["MahApps.Brushes.ThemeBackground"] = ToSolidColorBrush(Properties.Settings.Default.BackgroundColor);
@@ -47,14 +52,50 @@ namespace MessengerBotManager
             //App.Current.Resources["MahApps.Brushes.Text"] = ToSolidColorBrush(Properties.Settings.Default.FontColor);
         }
 
+        private void MainWindow_Activated(object sender, EventArgs e)
+        {
+            string expandString = "";
+            foreach (string name in changeFiles)
+            {
+                expandString += name + '\n';
+                Console.WriteLine(name);
+            }
+            TaskDialog dialog = new TaskDialog();
+            dialog.WindowTitle = "파일이 외부에서 변경됨";
+            dialog.Content = "일부 파일이 변경되었어요.\n다시 불러올까요?";
+            dialog.ExpandFooterArea = true;
+            dialog.ExpandedInformation = expandString;
+            TaskDialogButton button1 = new TaskDialogButton();
+            button1.ButtonType = ButtonType.Yes;
+            TaskDialogButton button2 = new TaskDialogButton();
+            button2.ButtonType = ButtonType.No;
+            dialog.Buttons.Add(button1);
+            dialog.Buttons.Add(button2);
+            dialog.ShowDialog();
+        }
+
         private void Watcher_Renamed(object sender, RenamedEventArgs e)
         {
-            //throw new NotImplementedException();
+            if(isBulitinEdit)
+            {
+                isBulitinEdit = false;
+                return;
+            }
+            FileAttributes attr = File.GetAttributes(e.FullPath);
+            if (attr.HasFlag(FileAttributes.Directory)) return;
+            changeFiles.AddRange(new string[] { e.FullPath });
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            //throw new NotImplementedException();
+            if (isBulitinEdit)
+            {
+                isBulitinEdit = false;
+                return;
+            }
+            FileAttributes attr = File.GetAttributes(e.FullPath);
+            if (attr.HasFlag(FileAttributes.Directory)) return;
+            changeFiles.AddRange(new string[] { e.FullPath });
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -239,8 +280,10 @@ namespace MessengerBotManager
             {
                 Content = "X",
                 HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
+                VerticalAlignment = VerticalAlignment.Center,
+                Name = botInfos[Bots.SelectedIndex].Name
             };
+            button.Click += Button_Click;
             Grid.SetColumn(button, 1);
             grid.Children.Add(button);
 
@@ -252,6 +295,7 @@ namespace MessengerBotManager
             //tabItem.Background = Brushes.Gray;
             Frame frame = new Frame();
             Page page = new Page1(File.ReadAllText(botInfos[Bots.SelectedIndex].Path));
+            page.PreviewKeyDown += Page_PreviewKeyDown;
             frame.Content = page;
 
             tabItem.Content = frame;
@@ -274,6 +318,26 @@ namespace MessengerBotManager
             }
         }
 
+        private void Page_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                Console.WriteLine(((Page1)((Frame)sender).Content).Editor.Text);
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            for(int i = 0; i < tab.Items.Count; i++)
+            {
+                MetroTabItem item = (MetroTabItem)tab.Items[i];
+                if(item.Name == ((Button)e.OriginalSource).Name)
+                {
+                    tab.Items.RemoveAt(i);
+                }
+            }
+        }
+
         public static SolidColorBrush ToSolidColorBrush(string hex_code)
         {
             return (SolidColorBrush)new BrushConverter().ConvertFromString(hex_code);
@@ -281,6 +345,7 @@ namespace MessengerBotManager
 
         private void tab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (tab.SelectedIndex == -1) return;
             ((MetroTabItem)tab.Items[tab.SelectedIndex]).Background = ToSolidColorBrush(Properties.Settings.Default.ForegroundColor);
             int index1 = 0;
             foreach (MetroTabItem item in tab.Items)

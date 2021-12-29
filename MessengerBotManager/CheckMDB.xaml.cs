@@ -134,6 +134,7 @@ namespace MessengerBotManager
 
         private void Window_Closing(object sender, EventArgs e)
         {
+            this.Focus();
             if(!Directory.Exists(Properties.Settings.Default.DataSavePath))
             {
                 try
